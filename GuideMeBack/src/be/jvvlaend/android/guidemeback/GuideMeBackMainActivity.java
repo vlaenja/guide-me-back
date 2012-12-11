@@ -31,9 +31,9 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 	private GPSTracker gpsTracker;
 	private Location destinationLocation;
 	private Bitmap arrow = null;
-	private int angle = 0;
 	private CompassSensor compassSensor = null;
 	private AverageCompassData averageCompassData = new AverageCompassData();
+	private float imageAngle;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -154,7 +154,6 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 			displayDestinationLocation();
 			break;
 		case R.id.loadSavedPositionsButton:
-			rotateImage();
 			break;
 		}
 	}
@@ -222,23 +221,25 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 
 	@Override
 	public void onCompassSensorChanged(SensorEvent event) {
-		Log.d("GuideMeBack", "CompassSensorChanged:" + event.toString());
 		CompassData compassData = new CompassData(event);
 		averageCompassData.add(compassData);
 		CompassData avg = averageCompassData.getAverage();
 		getTextView(R.id.compassXData).setText(formatSensorLocation(avg.getX()));
 		getTextView(R.id.compassYData).setText(formatSensorLocation(avg.getY()));
 		getTextView(R.id.compassZData).setText(formatSensorLocation(avg.getZ()));
+		rotateImage(avg.getX());
 	}
 
-	private void rotateImage() {
-		Log.v("GuideMeBack", "RotateImage");
-		ImageView imageView = getImageView(R.id.directionImage);
-		// Matrix matrix = imageView.getImageMatrix();
-		Matrix matrix = new Matrix();
-		angle += 10;
-		matrix.postRotate(angle);
-		Bitmap rotatedBitmap = Bitmap.createBitmap(arrow, 0, 0, arrow.getWidth(), arrow.getHeight(), matrix, true);
-		imageView.setImageBitmap(rotatedBitmap);
+	private void rotateImage(float angle) {
+		float delta = imageAngle - angle;
+		getTextView(R.id.compassDelta).setText(String.valueOf(delta));
+		if (delta < -2 || delta > 2) {
+			imageAngle = angle;
+			ImageView imageView = getImageView(R.id.directionImage);
+			Matrix matrix = new Matrix();
+			matrix.postRotate(angle);
+			Bitmap rotatedBitmap = Bitmap.createBitmap(arrow, 0, 0, arrow.getWidth(), arrow.getHeight(), matrix, true);
+			imageView.setImageBitmap(rotatedBitmap);
+		}
 	}
 }
