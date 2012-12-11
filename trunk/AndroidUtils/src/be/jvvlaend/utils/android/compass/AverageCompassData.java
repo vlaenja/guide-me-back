@@ -3,7 +3,7 @@ package be.jvvlaend.utils.android.compass;
 import java.util.ArrayList;
 
 public class AverageCompassData {
-	private static final int CAPACITY = 10;
+	private static final int CAPACITY = 50;
 	private ArrayList<CompassData> dataList = new ArrayList<CompassData>(CAPACITY);
 
 	public void add(CompassData compassData) {

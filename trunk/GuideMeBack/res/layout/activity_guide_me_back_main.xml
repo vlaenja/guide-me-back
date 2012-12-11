@@ -48,7 +48,7 @@
         android:id="@+id/speedData"
         android:layout_columnSpan="2"
         android:text="@string/emptyString" />
-    
+
     <TextView
         android:id="@+id/compassXData"
         android:text="@string/emptyString" />
@@ -61,12 +61,20 @@
         android:id="@+id/compassZData"
         android:text="@string/emptyString" />
 
-    <ImageView 
-        android:id="@+id/directionImage"
+    <TextView
+        android:id="@+id/compassDelta"
         android:layout_columnSpan="3"
-        android:layout_rowSpan="3"
-        android:src="@drawable/arrow"
-        android:contentDescription="@string/arrowDescription"/>
+        android:text="@string/emptyString" />
+
+    <ImageView
+        android:id="@+id/directionImage"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_columnSpan="3"
+        android:contentDescription="@string/arrowDescription"
+        android:gravity="right|center_vertical"
+        android:scaleType="centerInside"
+        android:src="@drawable/arrow" />
 
     <Button
         android:id="@+id/savePositionButton"
