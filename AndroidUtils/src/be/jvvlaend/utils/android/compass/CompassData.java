@@ -27,6 +27,22 @@ public class CompassData {
 		return sensorEvent.values[2];
 	}
 
+	protected SensorEvent getSensorEvent() {
+		return sensorEvent;
+	}
+
+	protected void setX(float x) {
+		sensorEvent.values[0] = x;
+	}
+
+	protected void setY(float y) {
+		sensorEvent.values[1] = y;
+	}
+
+	protected void setZ(float z) {
+		sensorEvent.values[2] = z;
+	}
+
 	public long getTimestamp() {
 		return sensorEvent.timestamp;
 	}
