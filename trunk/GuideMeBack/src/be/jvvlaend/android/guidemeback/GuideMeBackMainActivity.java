@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import be.jvvlaend.utils.android.compass.AverageCompassData;
 import be.jvvlaend.utils.android.compass.CompassChanged;
 import be.jvvlaend.utils.android.compass.CompassData;
 import be.jvvlaend.utils.android.compass.CompassSensor;
@@ -32,6 +33,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 	private Bitmap arrow = null;
 	private int angle = 0;
 	private CompassSensor compassSensor = null;
+	private AverageCompassData averageCompassData = new AverageCompassData();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -222,9 +224,11 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 	public void onCompassSensorChanged(SensorEvent event) {
 		Log.d("GuideMeBack", "CompassSensorChanged:" + event.toString());
 		CompassData compassData = new CompassData(event);
-		getTextView(R.id.compassXData).setText(formatSensorLocation(compassData.getX()));
-		getTextView(R.id.compassYData).setText(formatSensorLocation(compassData.getY()));
-		getTextView(R.id.compassZData).setText(formatSensorLocation(compassData.getZ()));
+		averageCompassData.add(compassData);
+		CompassData avg = averageCompassData.getAverage();
+		getTextView(R.id.compassXData).setText(formatSensorLocation(avg.getX()));
+		getTextView(R.id.compassYData).setText(formatSensorLocation(avg.getY()));
+		getTextView(R.id.compassZData).setText(formatSensorLocation(avg.getZ()));
 	}
 
 	private void rotateImage() {
