@@ -1,0 +1,15 @@
+<resources>
+
+    <string name="app_name">GuideMeBack</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_guide_me_back_main">GuideMeBack</string>
+    <string name="currentPosition">Current position:</string>
+    <string name="destinationPosition">Destination position:</string>
+    <string name="distanceLabelText">Distance to destination:</string>
+    <string name="emptyString"></string>
+    <string name="quickSaveButtonLabel">Quick Save</string>
+    <string name="loadSavedPositionButtonLabel">Load position</string>
+    <string name="speedLablel">Speed:</string>
+    <string name="arrowDescription">Arrow description</string>
+
+</resources>

@@ -1,0 +1,81 @@
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/GridLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:columnCount="3"
+    android:orientation="horizontal"
+    android:rowCount="5" >
+
+    <TextView
+        android:id="@+id/currentPositionLabel"
+        android:text="@string/currentPosition" />
+
+    <TextView
+        android:id="@+id/currentPositionLatitudeData"
+        android:text="@string/emptyString" />
+
+    <TextView
+        android:id="@+id/currentPositionLongitudeData"
+        android:text="@string/emptyString" />
+
+    <TextView
+        android:id="@+id/destinationPositionLabel"
+        android:text="@string/destinationPosition" />
+
+    <TextView
+        android:id="@+id/destinationPositionLatitudeData"
+        android:text="@string/emptyString" />
+
+    <TextView
+        android:id="@+id/destinationPositionLongitudeData"
+        android:text="@string/emptyString" />
+
+    <TextView
+        android:id="@+id/distanceLabel"
+        android:text="@string/distanceLabelText" />
+
+    <TextView
+        android:id="@+id/distanceToDestinationData"
+        android:layout_columnSpan="2"
+        android:text="@string/emptyString" />
+
+    <TextView
+        android:id="@+id/speedLabel"
+        android:text="@string/speedLablel" />
+
+    <TextView
+        android:id="@+id/speedData"
+        android:layout_columnSpan="2"
+        android:text="@string/emptyString" />
+    
+    <TextView
+        android:id="@+id/compassXData"
+        android:text="@string/emptyString" />
+
+    <TextView
+        android:id="@+id/compassYData"
+        android:text="@string/emptyString" />
+
+    <TextView
+        android:id="@+id/compassZData"
+        android:text="@string/emptyString" />
+
+    <ImageView 
+        android:id="@+id/directionImage"
+        android:layout_columnSpan="3"
+        android:layout_rowSpan="3"
+        android:src="@drawable/arrow"
+        android:contentDescription="@string/arrowDescription"/>
+
+    <Button
+        android:id="@+id/savePositionButton"
+        android:onClick="onClick"
+        android:text="@string/quickSaveButtonLabel" />
+
+    <Button
+        android:id="@+id/loadSavedPositionsButton"
+        android:onClick="onClick"
+        android:text="@string/loadSavedPositionButtonLabel" />
+
+</GridLayout>
