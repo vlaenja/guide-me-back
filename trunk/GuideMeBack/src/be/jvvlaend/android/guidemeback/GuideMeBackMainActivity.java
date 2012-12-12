@@ -33,7 +33,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 	private Bitmap arrow = null;
 	private CompassSensor compassSensor = null;
 	private AverageCompassData averageCompassData = new AverageCompassData();
-	private float imageAngle;
+	private float imageRotationAngle;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -231,15 +231,17 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 	}
 
 	private void rotateImage(float angle) {
-		float delta = imageAngle - angle;
+		float newRotationAngle = Math.abs(angle - 360);
+		float delta = imageRotationAngle - newRotationAngle;
 		getTextView(R.id.compassDelta).setText(String.valueOf(delta));
-		if (delta < -2 || delta > 2) {
-			imageAngle = angle;
+		if (Math.abs(delta) > 2) {
+			imageRotationAngle = newRotationAngle;
 			ImageView imageView = getImageView(R.id.directionImage);
 			Matrix matrix = new Matrix();
-			matrix.postRotate(angle);
+			matrix.postRotate(newRotationAngle);
 			Bitmap rotatedBitmap = Bitmap.createBitmap(arrow, 0, 0, arrow.getWidth(), arrow.getHeight(), matrix, true);
 			imageView.setImageBitmap(rotatedBitmap);
+			getTextView(R.id.rotationAngle).setText(String.valueOf(newRotationAngle));
 		}
 	}
 }
