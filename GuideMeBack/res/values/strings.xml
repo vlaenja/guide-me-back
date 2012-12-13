@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <string name="app_name">GuideMeBack</string>
@@ -11,5 +12,7 @@
     <string name="loadSavedPositionButtonLabel">Load position</string>
     <string name="speedLablel">Speed:</string>
     <string name="arrowDescription">Arrow description</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_debug">Debug</string>
 
 </resources>
