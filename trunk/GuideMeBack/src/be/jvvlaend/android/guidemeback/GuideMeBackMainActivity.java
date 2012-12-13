@@ -1,22 +1,20 @@
 package be.jvvlaend.android.guidemeback;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.hardware.SensorEvent;
 import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import be.jvvlaend.utils.android.compass.AverageCompassData;
 import be.jvvlaend.utils.android.compass.CompassChanged;
-import be.jvvlaend.utils.android.compass.CompassData;
 import be.jvvlaend.utils.android.compass.CompassSensor;
 import be.jvvlaend.utils.android.gps.GPSTracker;
 import be.jvvlaend.utils.android.gps.LocationChanged;
@@ -52,12 +50,15 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 			compassSensor = new CompassSensor(this);
 		}
 		setContentView(R.layout.activity_guide_me_back_main);
-		arrow = BitmapFactory.decodeResource(getResources(), R.drawable.arrow);
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+		if (compassSensor != null) {
+			compassSensor.stopCompass();
+			compassSensor = null;
+		}
 		if (gpsTracker != null) {
 			gpsTracker.stopLocationService();
 			gpsTracker = null;
@@ -66,12 +67,12 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 	}
 
 	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		if (outState == null) {
-			outState = new Bundle();
+	protected void onSaveInstanceState(Bundle bundle) {
+		if (bundle == null) {
+			bundle = new Bundle();
 		}
-		outState.putParcelable(SAVED_LOCATION, destinationLocation);
-		super.onSaveInstanceState(outState);
+		bundle.putParcelable(SAVED_LOCATION, destinationLocation);
+		super.onSaveInstanceState(bundle);
 	}
 
 	@Override
@@ -84,8 +85,11 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 
 	@Override
 	public void onBackPressed() {
-		// TODO Auto-generated method stub
 		super.onBackPressed();
+		if (compassSensor != null) {
+			compassSensor.stopCompass();
+			compassSensor = null;
+		}
 		if (gpsTracker != null) {
 			gpsTracker.stopLocationService();
 			gpsTracker = null;
@@ -103,7 +107,6 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 			compassSensor = new CompassSensor(this);
 		}
 		compassSensor.startCompass();
-		displayDestinationLocation();
 	}
 
 	@Override
@@ -139,7 +142,10 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 			gpsTracker.stopLocationService();
 			gpsTracker = null;
 		}
-		compassSensor.stopCompass();
+		if (compassSensor != null) {
+			compassSensor.stopCompass();
+			compassSensor = null;
+		}
 	}
 
 	@Override
@@ -148,33 +154,35 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 		return true;
 	}
 
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		menu.findItem(R.id.menu_manage_locations).setEnabled(false);
+		menu.findItem(R.id.menu_quick_save).setEnabled(false);
+		menu.findItem(R.id.menu_settings).setEnabled(false);
+		menu.findItem(R.id.menu_stored_locations).setEnabled(false);
+		return super.onPrepareOptionsMenu(menu);
+	}
+
 	public void onClick(View view) {
-		switch (view.getId()) {
-		case R.id.savePositionButton:
-			destinationLocation = gpsTracker.getLocation();
-			displayDestinationLocation();
-			break;
-		case R.id.loadSavedPositionsButton:
-			break;
-		}
 	}
 
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
-		Log.d("GuideMeBack", "onMenuItemSelected");
-		boolean menuItemSelected = super.onMenuItemSelected(featureId, item);
-		return menuItemSelected;
-	}
-
-	private void displayDestinationLocation() {
-		if (destinationLocation != null) {
-			getTextView(R.id.destinationPositionLatitudeData).setText(formatLocation(destinationLocation.getLatitude()));
-			getTextView(R.id.destinationPositionLongitudeData).setText(formatLocation(destinationLocation.getLongitude()));
-			getTextView(R.id.distanceToDestinationData).setText("");
-		} else {
-			getTextView(R.id.destinationPositionLatitudeData).setText("---");
-			getTextView(R.id.destinationPositionLongitudeData).setText("---");
+		switch (item.getItemId()) {
+		case R.id.menu_debug:
+			Intent intent = new Intent(this, DebugActivity.class);
+			startActivity(intent);
+			return true;
+		case R.id.menu_quick_save:
+			break;
+		case R.id.menu_manage_locations:
+			break;
+		case R.id.menu_settings:
+			break;
+		case R.id.menu_stored_locations:
+			break;
 		}
+		return super.onMenuItemSelected(featureId, item);
 	}
 
 	private CharSequence formatLocation(double value) {
@@ -189,14 +197,6 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 
 	@Override
 	public void onLocationChanged(Location location) {
-		getTextView(R.id.currentPositionLatitudeData).setText(formatLocation(location.getLatitude()));
-		getTextView(R.id.currentPositionLongitudeData).setText(formatLocation(location.getLongitude()));
-		if (destinationLocation != null) {
-			getTextView(R.id.distanceToDestinationData).setText(String.valueOf(location.distanceTo(destinationLocation)));
-			getTextView(R.id.gpsRotationAngle).setText(formatCompassLocation(location.bearingTo(destinationLocation)));
-			rotateGPSImage(location.bearingTo(destinationLocation));
-		}
-		getTextView(R.id.speedData).setText(String.valueOf(location.getSpeed()));
 	}
 
 	private void backupSavedLocation() {
@@ -224,13 +224,6 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 
 	@Override
 	public void onCompassSensorChanged(SensorEvent event) {
-		CompassData compassData = new CompassData(event);
-		averageCompassData.add(compassData);
-		CompassData avg = averageCompassData.getAverage();
-		getTextView(R.id.compassXData).setText(formatCompassLocation(avg.getX()));
-		getTextView(R.id.compassYData).setText(formatCompassLocation(avg.getY()));
-		getTextView(R.id.compassZData).setText(formatCompassLocation(avg.getZ()));
-		rotateCompassImage(Math.abs(avg.getX() - 360));
 	}
 
 	private void rotateGPSImage(float angle) {
