@@ -2,4 +2,16 @@
     <item android:id="@+id/menu_settings"
         android:title="@string/menu_settings"
         android:orderInCategory="100"/>
+    <item android:id="@+id/menu_quick_save"
+        android:title="@string/menu_quick_save"
+        android:orderInCategory="110"/>
+    <item android:id="@+id/menu_stored_locations"
+        android:title="@string/menu_stored_locations"
+        android:orderInCategory="120"/>
+    <item android:id="@+id/menu_manage_locations"
+        android:title="@string/menu_manage_locations"
+        android:orderInCategory="130"/>
+    <item android:id="@+id/menu_debug"
+        android:title="@string/menu_debug"
+        android:orderInCategory="140"/>
 </menu>
