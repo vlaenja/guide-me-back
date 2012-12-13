@@ -28,6 +28,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 	private static final String SAVED_LOCATION_LATITUDE = "savedLocationLatitude";
 	private static final String SAVED_LOCATION_LONGITUDE = "savedLocationLongitude";
 	private static final int DOUBLE_PRECISION = 100000;
+	private static final int DOUBLE_PRECISION_COMPASS = 1000;
 	private GPSTracker gpsTracker;
 	private Location destinationLocation;
 	private Bitmap arrow = null;
@@ -181,9 +182,9 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 		return String.valueOf((double) (tmp) / DOUBLE_PRECISION);
 	}
 
-	private CharSequence formatSensorLocation(float value) {
-		int tmp = (int) (value * DOUBLE_PRECISION);
-		return String.valueOf((double) (tmp) / DOUBLE_PRECISION);
+	private CharSequence formatCompassLocation(float value) {
+		int tmp = (int) (value * DOUBLE_PRECISION_COMPASS);
+		return String.valueOf((double) (tmp) / DOUBLE_PRECISION_COMPASS);
 	}
 
 	@Override
@@ -192,6 +193,8 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 		getTextView(R.id.currentPositionLongitudeData).setText(formatLocation(location.getLongitude()));
 		if (destinationLocation != null) {
 			getTextView(R.id.distanceToDestinationData).setText(String.valueOf(location.distanceTo(destinationLocation)));
+			getTextView(R.id.gpsRotationAngle).setText(formatCompassLocation(location.bearingTo(destinationLocation)));
+			rotateGPSImage(location.bearingTo(destinationLocation));
 		}
 		getTextView(R.id.speedData).setText(String.valueOf(location.getSpeed()));
 	}
@@ -224,24 +227,37 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 		CompassData compassData = new CompassData(event);
 		averageCompassData.add(compassData);
 		CompassData avg = averageCompassData.getAverage();
-		getTextView(R.id.compassXData).setText(formatSensorLocation(avg.getX()));
-		getTextView(R.id.compassYData).setText(formatSensorLocation(avg.getY()));
-		getTextView(R.id.compassZData).setText(formatSensorLocation(avg.getZ()));
-		rotateImage(avg.getX());
+		getTextView(R.id.compassXData).setText(formatCompassLocation(avg.getX()));
+		getTextView(R.id.compassYData).setText(formatCompassLocation(avg.getY()));
+		getTextView(R.id.compassZData).setText(formatCompassLocation(avg.getZ()));
+		rotateCompassImage(Math.abs(avg.getX() - 360));
 	}
 
-	private void rotateImage(float angle) {
-		float newRotationAngle = Math.abs(angle - 360);
-		float delta = imageRotationAngle - newRotationAngle;
+	private void rotateGPSImage(float angle) {
+		float delta = imageRotationAngle - angle;
 		getTextView(R.id.compassDelta).setText(String.valueOf(delta));
 		if (Math.abs(delta) > 2) {
-			imageRotationAngle = newRotationAngle;
-			ImageView imageView = getImageView(R.id.directionImage);
+			imageRotationAngle = angle;
+			ImageView imageView = getImageView(R.id.gpsDirectionImage);
 			Matrix matrix = new Matrix();
-			matrix.postRotate(newRotationAngle);
+			matrix.postRotate(angle);
 			Bitmap rotatedBitmap = Bitmap.createBitmap(arrow, 0, 0, arrow.getWidth(), arrow.getHeight(), matrix, true);
 			imageView.setImageBitmap(rotatedBitmap);
-			getTextView(R.id.rotationAngle).setText(String.valueOf(newRotationAngle));
+			getTextView(R.id.gpsRotationAngle).setText(String.valueOf(angle));
+		}
+	}
+
+	private void rotateCompassImage(float angle) {
+		float delta = imageRotationAngle - angle;
+		getTextView(R.id.compassDelta).setText(String.valueOf(delta));
+		if (Math.abs(delta) > 2) {
+			imageRotationAngle = angle;
+			ImageView imageView = getImageView(R.id.compassDirectionImage);
+			Matrix matrix = new Matrix();
+			matrix.postRotate(angle);
+			Bitmap rotatedBitmap = Bitmap.createBitmap(arrow, 0, 0, arrow.getWidth(), arrow.getHeight(), matrix, true);
+			imageView.setImageBitmap(rotatedBitmap);
+			getTextView(R.id.compassRotationAngle).setText(String.valueOf(angle));
 		}
 	}
 }

@@ -1,93 +1,270 @@
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/GridLayout1"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:columnCount="3"
-    android:orientation="horizontal"
-    android:rowCount="5" >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/currentPositionLabel"
-        android:text="@string/currentPosition" />
-
-    <TextView
-        android:id="@+id/currentPositionLatitudeData"
-        android:text="@string/emptyString" />
-
-    <TextView
-        android:id="@+id/currentPositionLongitudeData"
-        android:text="@string/emptyString" />
-
-    <TextView
-        android:id="@+id/destinationPositionLabel"
-        android:text="@string/destinationPosition" />
-
-    <TextView
-        android:id="@+id/destinationPositionLatitudeData"
-        android:text="@string/emptyString" />
-
-    <TextView
-        android:id="@+id/destinationPositionLongitudeData"
-        android:text="@string/emptyString" />
-
-    <TextView
-        android:id="@+id/distanceLabel"
-        android:text="@string/distanceLabelText" />
-
-    <TextView
-        android:id="@+id/distanceToDestinationData"
-        android:layout_columnSpan="2"
-        android:text="@string/emptyString" />
-
-    <TextView
-        android:id="@+id/speedLabel"
-        android:text="@string/speedLablel" />
-
-    <TextView
-        android:id="@+id/speedData"
-        android:layout_columnSpan="2"
-        android:text="@string/emptyString" />
-
-    <TextView
-        android:id="@+id/compassXData"
-        android:text="@string/emptyString" />
-
-    <TextView
-        android:id="@+id/compassYData"
-        android:text="@string/emptyString" />
-
-    <TextView
-        android:id="@+id/compassZData"
-        android:text="@string/emptyString" />
-
-    <TextView
-        android:id="@+id/compassDelta"
-        android:text="@string/emptyString" />
-
-    <TextView
-        android:id="@+id/rotationAngle"
-        android:layout_columnSpan="2"
-        android:text="@string/emptyString" />
-
-    <ImageView
-        android:id="@+id/directionImage"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_columnSpan="3"
-        android:contentDescription="@string/arrowDescription"
-        android:gravity="right|center_vertical"
-        android:scaleType="centerInside"
-        android:src="@drawable/arrow" />
+        android:layout_height="25dp"
+        android:orientation="horizontal" >
 
-    <Button
-        android:id="@+id/savePositionButton"
-        android:onClick="onClick"
-        android:text="@string/quickSaveButtonLabel" />
+        <TextView
+            android:id="@+id/currentPositionLabel"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:text="@string/currentPosition" />
 
-    <Button
-        android:id="@+id/loadSavedPositionsButton"
-        android:onClick="onClick"
-        android:text="@string/loadSavedPositionButtonLabel" />
+        <TextView
+            android:id="@+id/currentPositionLatitudeData"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:text="@string/emptyString" />
 
-</GridLayout>
+        <TextView
+            android:id="@+id/currentPositionLongitudeData"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:text="@string/emptyString" />
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/destinationPositionLabel"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:text="@string/destinationPosition" />
+
+        <TextView
+            android:id="@+id/destinationPositionLatitudeData"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:text="@string/emptyString" />
+
+        <TextView
+            android:id="@+id/destinationPositionLongitudeData"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:text="@string/emptyString" />
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/distanceLabel"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:text="@string/distanceLabelText" />
+
+        <TextView
+            android:id="@+id/distanceToDestinationData"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:text="@string/emptyString" />
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/speedLabel"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:text="@string/speedLablel" />
+
+        <TextView
+            android:id="@+id/speedData"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:text="@string/emptyString" />
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/compassDataLabel"
+            android:layout_width="75dp"
+            android:layout_height="match_parent"
+            android:text="Compass:" />
+
+        <TextView
+            android:id="@+id/compassXData"
+            android:layout_width="55dp"
+            android:layout_height="match_parent"
+            android:text="@string/emptyString" />
+
+        <TextView
+            android:id="@+id/compassDataXLabel"
+            android:layout_width="15dp"
+            android:layout_height="match_parent"
+            android:text="x" />
+
+        <TextView
+            android:id="@+id/compassYData"
+            android:layout_width="55dp"
+            android:layout_height="match_parent"
+            android:text="@string/emptyString" />
+
+        <TextView
+            android:id="@+id/compassDataYLabel"
+            android:layout_width="15dp"
+            android:layout_height="match_parent"
+            android:text="y" />
+
+        <TextView
+            android:id="@+id/compassZData"
+            android:layout_width="55dp"
+            android:layout_height="match_parent"
+            android:text="@string/emptyString" />
+
+        <TextView
+            android:id="@+id/compassDataZLabel"
+            android:layout_width="15dp"
+            android:layout_height="match_parent"
+            android:text="z" />
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/compassDeltaLabel"
+            android:layout_width="120dp"
+            android:layout_height="match_parent"
+            android:text="Compass Delta" />
+
+            <TextView
+            android:id="@+id/compassDelta"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:text="@string/emptyString" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/compassRotationAngleLabel"
+            android:layout_width="120dp"
+            android:layout_height="match_parent"
+            android:text="Compass direction" />
+        <TextView
+            android:id="@+id/compassRotationAngle"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:text="@string/emptyString" />
+
+        
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/gpsRotationAngleLabel"
+            android:layout_width="120dp"
+            android:layout_height="match_parent"
+            android:text="GPS direction" />
+        
+        <TextView
+            android:id="@+id/gpsRotationAngle"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:text="@string/emptyString" />
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/gpsImageleLabel"
+            android:layout_width="125dp"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:text="GPS" />
+        
+        <TextView
+            android:id="@+id/compassImageLabel"
+            android:layout_width="125dp"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:text="Compass" />
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/gpsDirectionImage"
+            android:layout_width="125dp"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/arrowDescription"
+            android:gravity="center_vertical"
+            android:scaleType="centerInside"
+            android:src="@drawable/arrow" />
+
+        <ImageView
+            android:id="@+id/compassDirectionImage"
+            android:layout_width="125dp"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/arrowDescription"
+            android:gravity="center_vertical"
+            android:scaleType="centerInside"
+            android:src="@drawable/arrow" />
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/savePositionButton"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:onClick="onClick"
+            android:text="@string/quickSaveButtonLabel" />
+
+        <Button
+            android:id="@+id/loadSavedPositionsButton"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:onClick="onClick"
+            android:text="@string/loadSavedPositionButtonLabel" />
+    </LinearLayout>
+
+</LinearLayout>
