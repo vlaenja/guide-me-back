@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.hardware.SensorEvent;
 import android.location.Location;
@@ -13,7 +14,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import be.jvvlaend.utils.android.compass.AverageCompassData;
 import be.jvvlaend.utils.android.compass.CompassChanged;
 import be.jvvlaend.utils.android.compass.CompassSensor;
 import be.jvvlaend.utils.android.gps.GPSTracker;
@@ -25,13 +25,12 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 	private static final String SAVED_LOCATION_PROVIDER = "savedLocationProvider";
 	private static final String SAVED_LOCATION_LATITUDE = "savedLocationLatitude";
 	private static final String SAVED_LOCATION_LONGITUDE = "savedLocationLongitude";
-	private static final int DOUBLE_PRECISION = 100000;
-	private static final int DOUBLE_PRECISION_COMPASS = 1000;
 	private GPSTracker gpsTracker;
 	private Location destinationLocation;
+	private Location lastReceivedLocation = null;
 	private Bitmap arrow = null;
 	private CompassSensor compassSensor = null;
-	private AverageCompassData averageCompassData = new AverageCompassData();
+	// private AverageCompassData averageCompassData = new AverageCompassData();
 	private float imageRotationAngle;
 
 	@Override
@@ -50,6 +49,15 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 			compassSensor = new CompassSensor(this);
 		}
 		setContentView(R.layout.activity_guide_me_back_main);
+		arrow = BitmapFactory.decodeResource(getResources(), R.drawable.directionarrow);
+		initScreenData();
+	}
+
+	private void initScreenData() {
+		getTextView(R.id.speedData).setText("--");
+		getTextView(R.id.distanceData).setText("--");
+		getTextView(R.id.distanceUnits).setText("--");
+
 	}
 
 	@Override
@@ -157,7 +165,6 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		menu.findItem(R.id.menu_manage_locations).setEnabled(false);
-		menu.findItem(R.id.menu_quick_save).setEnabled(false);
 		menu.findItem(R.id.menu_settings).setEnabled(false);
 		menu.findItem(R.id.menu_stored_locations).setEnabled(false);
 		return super.onPrepareOptionsMenu(menu);
@@ -174,6 +181,9 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 			startActivity(intent);
 			return true;
 		case R.id.menu_quick_save:
+			if (lastReceivedLocation != null) {
+				destinationLocation = lastReceivedLocation;
+			}
 			break;
 		case R.id.menu_manage_locations:
 			break;
@@ -185,18 +195,31 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 		return super.onMenuItemSelected(featureId, item);
 	}
 
-	private CharSequence formatLocation(double value) {
-		int tmp = (int) (value * DOUBLE_PRECISION);
-		return String.valueOf((double) (tmp) / DOUBLE_PRECISION);
-	}
-
-	private CharSequence formatCompassLocation(float value) {
-		int tmp = (int) (value * DOUBLE_PRECISION_COMPASS);
-		return String.valueOf((double) (tmp) / DOUBLE_PRECISION_COMPASS);
-	}
-
 	@Override
 	public void onLocationChanged(Location location) {
+		lastReceivedLocation = location;
+		showActualSpeed(location.getSpeed());
+		if (destinationLocation != null) {
+			showDistanceToDestination(location.distanceTo(destinationLocation));
+			rotateImage(location.bearingTo(destinationLocation));
+		}
+	}
+
+	private void showActualSpeed(float speed) {
+		getTextView(R.id.speedData).setText(String.valueOf(Float.valueOf(((speed * 1000) / 3600) * 10).intValue() / 10f));
+
+	}
+
+	private void showDistanceToDestination(float distanceTo) {
+		int distance = Float.valueOf(distanceTo).intValue();
+		if (distance < 10000) {
+			getTextView(R.id.distanceUnits).setText("m");
+			getTextView(R.id.distanceData).setText(String.valueOf(distance));
+		} else {
+			getTextView(R.id.distanceUnits).setText("Km");
+			getTextView(R.id.distanceData).setText(String.valueOf(Float.valueOf(distance / 10).intValue() / 100f));
+		}
+
 	}
 
 	private void backupSavedLocation() {
@@ -226,31 +249,16 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 	public void onCompassSensorChanged(SensorEvent event) {
 	}
 
-	private void rotateGPSImage(float angle) {
+	private void rotateImage(float angle) {
 		float delta = imageRotationAngle - angle;
-		getTextView(R.id.compassDelta).setText(String.valueOf(delta));
 		if (Math.abs(delta) > 2) {
 			imageRotationAngle = angle;
-			ImageView imageView = getImageView(R.id.gpsDirectionImage);
+			ImageView imageView = getImageView(R.id.directionImage);
 			Matrix matrix = new Matrix();
 			matrix.postRotate(angle);
 			Bitmap rotatedBitmap = Bitmap.createBitmap(arrow, 0, 0, arrow.getWidth(), arrow.getHeight(), matrix, true);
 			imageView.setImageBitmap(rotatedBitmap);
-			getTextView(R.id.gpsRotationAngle).setText(String.valueOf(angle));
 		}
 	}
 
-	private void rotateCompassImage(float angle) {
-		float delta = imageRotationAngle - angle;
-		getTextView(R.id.compassDelta).setText(String.valueOf(delta));
-		if (Math.abs(delta) > 2) {
-			imageRotationAngle = angle;
-			ImageView imageView = getImageView(R.id.compassDirectionImage);
-			Matrix matrix = new Matrix();
-			matrix.postRotate(angle);
-			Bitmap rotatedBitmap = Bitmap.createBitmap(arrow, 0, 0, arrow.getWidth(), arrow.getHeight(), matrix, true);
-			imageView.setImageBitmap(rotatedBitmap);
-			getTextView(R.id.compassRotationAngle).setText(String.valueOf(angle));
-		}
-	}
 }

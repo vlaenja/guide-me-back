@@ -8,15 +8,18 @@
     <string name="menu_manage_locations">Manage locations</string>
     <string name="menu_debug">Debug</string>
     <string name="title_activity_guide_me_back_main">GuideMeBack</string>
-    <string name="currentPosition">Current position:</string>
-    <string name="destinationPosition">Destination position:</string>
-    <string name="distanceLabelText">Distance to destination:</string>
     <string name="emptyString"></string>
-    <string name="quickSaveButtonLabel">Quick Save</string>
-    <string name="loadSavedPositionButtonLabel">Load position</string>
-    <string name="speedLablel">Speed:</string>
-    <string name="arrowDescription">Arrow description</string>
     <string name="hello_world">Hello world!</string>
+    <string name="speedLabel">Speed</string>
+    <string name="distanceLabel">Distance</string>
+    <string name="speedunits">Km/h</string>
     <string name="title_activity_debug">Debug</string>
+    <string name="debug_currentPosition">Current position:</string>
+    <string name="debug_destinationPosition">Destination position:</string>
+    <string name="debug_distanceLabelText">Distance to destination:</string>
+    <string name="debug_quickSaveButtonLabel">Quick Save</string>
+    <string name="debug_loadSavedPositionButtonLabel">Load position</string>
+    <string name="debug_speedLabel">Speed:</string>
+    <string name="debug_arrowDescription">Arrow description</string>
 
 </resources>
