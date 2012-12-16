@@ -14,7 +14,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import be.jvvlaend.utils.android.compass.AverageCompassData;
 import be.jvvlaend.utils.android.compass.CompassChanged;
+import be.jvvlaend.utils.android.compass.CompassData;
 import be.jvvlaend.utils.android.compass.CompassSensor;
 import be.jvvlaend.utils.android.gps.GPSTracker;
 import be.jvvlaend.utils.android.gps.LocationChanged;
@@ -28,9 +30,10 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 	private GPSTracker gpsTracker;
 	private Location destinationLocation;
 	private Location lastReceivedLocation = null;
+	private long lastReceivedLocationTime = 0;
 	private Bitmap arrow = null;
 	private CompassSensor compassSensor = null;
-	// private AverageCompassData averageCompassData = new AverageCompassData();
+	private AverageCompassData averageCompassData = new AverageCompassData();
 	private float imageRotationAngle;
 
 	@Override
@@ -50,6 +53,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 		}
 		setContentView(R.layout.activity_guide_me_back_main);
 		arrow = BitmapFactory.decodeResource(getResources(), R.drawable.directionarrow);
+		lastReceivedLocationTime = System.currentTimeMillis();
 		initScreenData();
 	}
 
@@ -247,6 +251,21 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 
 	@Override
 	public void onCompassSensorChanged(SensorEvent event) {
+		CompassData compassData = new CompassData(event);
+		averageCompassData.add(compassData);
+		if (lastReceivedLocation != null) {
+			lastReceivedLocationTime = lastReceivedLocation.getTime();
+		}
+		if (System.currentTimeMillis() - lastReceivedLocationTime > 5000) {
+			if ((Math.abs(compassData.getY()) > 25) || (Math.abs(compassData.getZ()) > 25)) {
+				getTextView(R.id.info1).setText(R.string.keepLevel);
+			} else {
+				getTextView(R.id.info1).setText(R.string.emptyString);
+			}
+			if (lastReceivedLocation != null && destinationLocation != null) {
+				rotateImage(lastReceivedLocation.bearingTo(destinationLocation) - averageCompassData.getAverage().getX());
+			}
+		}
 	}
 
 	private void rotateImage(float angle) {

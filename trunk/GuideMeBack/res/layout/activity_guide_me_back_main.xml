@@ -92,7 +92,7 @@
             android:layout_height="match_parent"
             android:gravity="left"
             android:text="@string/emptyString"
-            android:textColor="@color/White"
+            android:textColor="@color/Bisque"
             android:textSize="12sp" />
     </LinearLayout>
 
