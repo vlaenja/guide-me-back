@@ -11,7 +11,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 
 public class GPSTracker extends Service implements LocationListener {
-	private static final int MINIMUM_DISTANCE_BETWEEN_UPDATES = 5;
+	private static final int MINIMUM_DISTANCE_BETWEEN_UPDATES = 3;
 	private static final int MINIMUM_TIME_BETWEEN_UPDATES = 500;
 	private Context myContext;
 	private LocationManager locationManager;
