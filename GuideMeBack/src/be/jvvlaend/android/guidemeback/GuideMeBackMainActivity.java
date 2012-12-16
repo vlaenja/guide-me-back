@@ -29,7 +29,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 	private static final String SAVED_LOCATION_LONGITUDE = "savedLocationLongitude";
 	private GPSTracker gpsTracker;
 	private Location destinationLocation;
-	private Location lastReceivedLocation = null;
+	private Location lastReceivedGPSLocation = null;
 	private long lastReceivedLocationTime = 0;
 	private Bitmap arrow = null;
 	private CompassSensor compassSensor = null;
@@ -185,8 +185,8 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 			startActivity(intent);
 			return true;
 		case R.id.menu_quick_save:
-			if (lastReceivedLocation != null) {
-				destinationLocation = lastReceivedLocation;
+			if (lastReceivedGPSLocation != null) {
+				destinationLocation = lastReceivedGPSLocation;
 			}
 			break;
 		case R.id.menu_manage_locations:
@@ -201,7 +201,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 
 	@Override
 	public void onLocationChanged(Location location) {
-		lastReceivedLocation = location;
+		lastReceivedGPSLocation = location;
 		showActualSpeed(location.getSpeed());
 		if (destinationLocation != null) {
 			showDistanceToDestination(location.distanceTo(destinationLocation));
@@ -210,7 +210,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 	}
 
 	private void showActualSpeed(float speed) {
-		getTextView(R.id.speedData).setText(String.valueOf(Float.valueOf(((speed * 1000) / 3600) * 10).intValue() / 10f));
+		getTextView(R.id.speedData).setText(String.valueOf(Float.valueOf((speed * 3.6f) * 10).intValue() / 10f));
 
 	}
 
@@ -253,8 +253,8 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 	public void onCompassSensorChanged(SensorEvent event) {
 		CompassData compassData = new CompassData(event);
 		averageCompassData.add(compassData);
-		if (lastReceivedLocation != null) {
-			lastReceivedLocationTime = lastReceivedLocation.getTime();
+		if (lastReceivedGPSLocation != null) {
+			lastReceivedLocationTime = lastReceivedGPSLocation.getTime();
 		}
 		if (System.currentTimeMillis() - lastReceivedLocationTime > 5000) {
 			if ((Math.abs(compassData.getY()) > 25) || (Math.abs(compassData.getZ()) > 25)) {
@@ -262,8 +262,8 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 			} else {
 				getTextView(R.id.info1).setText(R.string.emptyString);
 			}
-			if (lastReceivedLocation != null && destinationLocation != null) {
-				rotateImage(lastReceivedLocation.bearingTo(destinationLocation) - averageCompassData.getAverage().getX());
+			if (lastReceivedGPSLocation != null && destinationLocation != null) {
+				rotateImage(lastReceivedGPSLocation.bearingTo(destinationLocation) - averageCompassData.getAverage().getX());
 			}
 		}
 	}
