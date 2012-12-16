@@ -52,7 +52,7 @@ public class DebugActivity extends MyActivity implements LocationChanged, Compas
 			compassSensor = new CompassSensor(this);
 		}
 		setContentView(R.layout.activity_debug);
-		arrow = BitmapFactory.decodeResource(getResources(), R.drawable.arrow);
+		arrow = BitmapFactory.decodeResource(getResources(), R.drawable.directionarrow);
 	}
 
 	@Override
@@ -149,11 +149,11 @@ public class DebugActivity extends MyActivity implements LocationChanged, Compas
 
 	public void onClick(View view) {
 		switch (view.getId()) {
-		case R.id.savePositionButton:
+		case R.id.debug_savePositionButton:
 			destinationLocation = gpsTracker.getLocation();
 			displayDestinationLocation();
 			break;
-		case R.id.loadSavedPositionsButton:
+		case R.id.debug_loadSavedPositionsButton:
 			break;
 		}
 	}
@@ -167,12 +167,12 @@ public class DebugActivity extends MyActivity implements LocationChanged, Compas
 
 	private void displayDestinationLocation() {
 		if (destinationLocation != null) {
-			getTextView(R.id.destinationPositionLatitudeData).setText(formatLocation(destinationLocation.getLatitude()));
-			getTextView(R.id.destinationPositionLongitudeData).setText(formatLocation(destinationLocation.getLongitude()));
-			getTextView(R.id.distanceToDestinationData).setText("");
+			getTextView(R.id.debug_destinationPositionLatitudeData).setText(formatLocation(destinationLocation.getLatitude()));
+			getTextView(R.id.debug_destinationPositionLongitudeData).setText(formatLocation(destinationLocation.getLongitude()));
+			getTextView(R.id.debug_distanceToDestinationData).setText("");
 		} else {
-			getTextView(R.id.destinationPositionLatitudeData).setText("---");
-			getTextView(R.id.destinationPositionLongitudeData).setText("---");
+			getTextView(R.id.debug_destinationPositionLatitudeData).setText("---");
+			getTextView(R.id.debug_destinationPositionLongitudeData).setText("---");
 		}
 	}
 
@@ -188,11 +188,11 @@ public class DebugActivity extends MyActivity implements LocationChanged, Compas
 
 	@Override
 	public void onLocationChanged(Location location) {
-		getTextView(R.id.currentPositionLatitudeData).setText(formatLocation(location.getLatitude()));
-		getTextView(R.id.currentPositionLongitudeData).setText(formatLocation(location.getLongitude()));
+		getTextView(R.id.debug_currentPositionLatitudeData).setText(formatLocation(location.getLatitude()));
+		getTextView(R.id.debug_currentPositionLongitudeData).setText(formatLocation(location.getLongitude()));
 		if (destinationLocation != null) {
-			getTextView(R.id.distanceToDestinationData).setText(String.valueOf(location.distanceTo(destinationLocation)));
-			getTextView(R.id.gpsRotationAngle).setText(formatCompassLocation(location.bearingTo(destinationLocation)));
+			getTextView(R.id.debug_distanceToDestinationData).setText(String.valueOf(location.distanceTo(destinationLocation)));
+			getTextView(R.id.debug_gpsRotationAngle).setText(formatCompassLocation(location.bearingTo(destinationLocation)));
 			rotateGPSImage(location.bearingTo(destinationLocation));
 		}
 		getTextView(R.id.speedData).setText(String.valueOf(location.getSpeed()));
@@ -226,32 +226,32 @@ public class DebugActivity extends MyActivity implements LocationChanged, Compas
 		CompassData compassData = new CompassData(event);
 		averageCompassData.add(compassData);
 		CompassData avg = averageCompassData.getAverage();
-		getTextView(R.id.compassXData).setText(formatCompassLocation(avg.getX()));
-		getTextView(R.id.compassYData).setText(formatCompassLocation(avg.getY()));
-		getTextView(R.id.compassZData).setText(formatCompassLocation(avg.getZ()));
+		getTextView(R.id.debug_compassXData).setText(formatCompassLocation(avg.getX()));
+		getTextView(R.id.debug_compassYData).setText(formatCompassLocation(avg.getY()));
+		getTextView(R.id.debug_compassZData).setText(formatCompassLocation(avg.getZ()));
 		rotateCompassImage(Math.abs(avg.getX() - 360));
 	}
 
 	private void rotateGPSImage(float angle) {
-		ImageView imageView = getImageView(R.id.gpsDirectionImage);
+		ImageView imageView = getImageView(R.id.debug_gpsDirectionImage);
 		Matrix matrix = new Matrix();
 		matrix.postRotate(angle);
 		Bitmap rotatedBitmap = Bitmap.createBitmap(arrow, 0, 0, arrow.getWidth(), arrow.getHeight(), matrix, true);
 		imageView.setImageBitmap(rotatedBitmap);
-		getTextView(R.id.gpsRotationAngle).setText(String.valueOf(angle));
+		getTextView(R.id.debug_gpsRotationAngle).setText(String.valueOf(angle));
 	}
 
 	private void rotateCompassImage(float angle) {
 		float delta = imageRotationAngle - angle;
-		getTextView(R.id.compassDelta).setText(String.valueOf(delta));
+		getTextView(R.id.debug_compassDelta).setText(String.valueOf(delta));
 		if (Math.abs(delta) > 2) {
 			imageRotationAngle = angle;
-			ImageView imageView = getImageView(R.id.compassDirectionImage);
+			ImageView imageView = getImageView(R.id.debug_compassDirectionImage);
 			Matrix matrix = new Matrix();
 			matrix.postRotate(angle);
 			Bitmap rotatedBitmap = Bitmap.createBitmap(arrow, 0, 0, arrow.getWidth(), arrow.getHeight(), matrix, true);
 			imageView.setImageBitmap(rotatedBitmap);
-			getTextView(R.id.compassRotationAngle).setText(String.valueOf(angle));
+			getTextView(R.id.debug_compassRotationAngle).setText(String.valueOf(angle));
 		}
 	}
 }
