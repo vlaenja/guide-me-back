@@ -234,7 +234,7 @@
             android:contentDescription="@string/debug_arrowDescription"
             android:gravity="center_vertical"
             android:scaleType="centerInside"
-            android:src="@drawable/arrow" />
+            android:src="@drawable/directionarrow" />
 
         <ImageView
             android:id="@+id/debug_compassDirectionImage"
@@ -243,7 +243,7 @@
             android:contentDescription="@string/debug_arrowDescription"
             android:gravity="center_vertical"
             android:scaleType="centerInside"
-            android:src="@drawable/arrow" />
+            android:src="@drawable/directionarrow" />
     </LinearLayout>
 
     <LinearLayout
