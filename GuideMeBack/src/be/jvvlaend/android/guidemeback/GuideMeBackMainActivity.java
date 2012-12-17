@@ -21,6 +21,7 @@ import be.jvvlaend.utils.android.compass.CompassSensor;
 import be.jvvlaend.utils.android.gps.GPSTracker;
 import be.jvvlaend.utils.android.gps.LocationChanged;
 import be.jvvlaend.utils.android.utils.MyActivity;
+import be.jvvlaend.utils.android.utils.Utils;
 
 public class GuideMeBackMainActivity extends MyActivity implements LocationChanged, CompassChanged {
 	private static final String SAVED_LOCATION = "savedLocation";
@@ -30,7 +31,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 	private GPSTracker gpsTracker;
 	private Location destinationLocation;
 	private Location lastReceivedGPSLocation = null;
-	private long lastReceivedLocationTime = 0;
+	private long lastReceivedGPSLocationTime = 0;
 	private Bitmap arrow = null;
 	private CompassSensor compassSensor = null;
 	private AverageCompassData averageCompassData = new AverageCompassData();
@@ -53,7 +54,6 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 		}
 		setContentView(R.layout.activity_guide_me_back_main);
 		arrow = BitmapFactory.decodeResource(getResources(), R.drawable.directionarrow);
-		lastReceivedLocationTime = System.currentTimeMillis();
 		initScreenData();
 	}
 
@@ -201,6 +201,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 
 	@Override
 	public void onLocationChanged(Location location) {
+		lastReceivedGPSLocationTime = System.currentTimeMillis();
 		lastReceivedGPSLocation = location;
 		showActualSpeed(location.getSpeed());
 		if (destinationLocation != null) {
@@ -210,7 +211,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 	}
 
 	private void showActualSpeed(float speed) {
-		getTextView(R.id.speedData).setText(String.valueOf(Float.valueOf((speed * 3.6f) * 10).intValue() / 10f));
+		getTextView(R.id.speedData).setText(String.valueOf(Utils.afrondenTotCijfersNaKomma(speed * 3.6f, 2)));
 
 	}
 
@@ -221,7 +222,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 			getTextView(R.id.distanceData).setText(String.valueOf(distance));
 		} else {
 			getTextView(R.id.distanceUnits).setText("Km");
-			getTextView(R.id.distanceData).setText(String.valueOf(Float.valueOf(distance / 10).intValue() / 100f));
+			getTextView(R.id.distanceData).setText(String.valueOf(Utils.afrondenTotCijfersNaKomma(distance / 1000f, 2)));
 		}
 
 	}
@@ -253,10 +254,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 	public void onCompassSensorChanged(SensorEvent event) {
 		CompassData compassData = new CompassData(event);
 		averageCompassData.add(compassData);
-		if (lastReceivedGPSLocation != null) {
-			lastReceivedLocationTime = lastReceivedGPSLocation.getTime();
-		}
-		if (System.currentTimeMillis() - lastReceivedLocationTime > 5000) {
+		if (System.currentTimeMillis() - lastReceivedGPSLocationTime > 5000) {
 			if ((Math.abs(compassData.getY()) > 25) || (Math.abs(compassData.getZ()) > 25)) {
 				getTextView(R.id.info1).setText(R.string.keepLevel);
 			} else {
