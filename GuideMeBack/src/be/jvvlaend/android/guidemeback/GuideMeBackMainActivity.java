@@ -24,13 +24,15 @@ import be.jvvlaend.utils.android.utils.MyActivity;
 import be.jvvlaend.utils.android.utils.Utils;
 
 public class GuideMeBackMainActivity extends MyActivity implements LocationChanged, CompassChanged {
+	private static final int DEVICE_ALLOWED_LEVEL = 25;
+	private static final int GPS_EXPECTED_UPDATE_TIME = 5000;
 	private static final String SAVED_LOCATION = "savedLocation";
 	private static final String SAVED_LOCATION_PROVIDER = "savedLocationProvider";
 	private static final String SAVED_LOCATION_LATITUDE = "savedLocationLatitude";
 	private static final String SAVED_LOCATION_LONGITUDE = "savedLocationLongitude";
 	private GPSTracker gpsTracker;
 	private Location destinationLocation;
-	private Location lastReceivedGPSLocation = null;
+	private Location previousReceivedGPSLocation = null;
 	private long lastReceivedGPSLocationTime = 0;
 	private Bitmap arrow = null;
 	private CompassSensor compassSensor = null;
@@ -185,8 +187,9 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 			startActivity(intent);
 			return true;
 		case R.id.menu_quick_save:
-			if (lastReceivedGPSLocation != null) {
-				destinationLocation = lastReceivedGPSLocation;
+			if (previousReceivedGPSLocation != null) {
+				destinationLocation = previousReceivedGPSLocation;
+				quickSaveLocation(destinationLocation);
 			}
 			break;
 		case R.id.menu_manage_locations:
@@ -199,15 +202,35 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 		return super.onMenuItemSelected(featureId, item);
 	}
 
+	private void quickSaveLocation(Location location) {
+		SavedLocation savedLocation = new SavedLocation(location);
+		savedLocation.setOmschrijving("Quick save");
+		GuideMeBackDbHelper dbHelper = new GuideMeBackDbHelper(this);
+		dbHelper.insertLocation(savedLocation);
+		dbHelper = null;
+	}
+
 	@Override
 	public void onLocationChanged(Location location) {
-		lastReceivedGPSLocationTime = System.currentTimeMillis();
-		lastReceivedGPSLocation = location;
 		showActualSpeed(location.getSpeed());
 		if (destinationLocation != null) {
 			showDistanceToDestination(location.distanceTo(destinationLocation));
-			rotateImage(location.bearingTo(destinationLocation));
+			rotateImage(calculateDirection(location, previousReceivedGPSLocation, destinationLocation));
+			getTextView(R.id.debugline1).setText(String.valueOf(calculateDirection(location, previousReceivedGPSLocation, destinationLocation)));
 		}
+		keepLastGPSLocation(location);
+	}
+
+	private float calculateDirection(Location actualLocation, Location previousLocation, Location destinationLocation) {
+		if (actualLocation == null || previousLocation == null || destinationLocation == null) {
+			return 0f;
+		}
+		return previousLocation.bearingTo(actualLocation) - actualLocation.bearingTo(destinationLocation);
+	}
+
+	private void keepLastGPSLocation(Location location) {
+		lastReceivedGPSLocationTime = System.currentTimeMillis();
+		previousReceivedGPSLocation = new Location(location);
 	}
 
 	private void showActualSpeed(float speed) {
@@ -254,16 +277,23 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 	public void onCompassSensorChanged(SensorEvent event) {
 		CompassData compassData = new CompassData(event);
 		averageCompassData.add(compassData);
-		if (System.currentTimeMillis() - lastReceivedGPSLocationTime > 5000) {
-			if ((Math.abs(compassData.getY()) > 25) || (Math.abs(compassData.getZ()) > 25)) {
+		if (!gpsIsUpdating()) {
+
+			if ((Math.abs(compassData.getY()) > DEVICE_ALLOWED_LEVEL) || (Math.abs(compassData.getZ()) > DEVICE_ALLOWED_LEVEL)) {
 				getTextView(R.id.info1).setText(R.string.keepLevel);
 			} else {
 				getTextView(R.id.info1).setText(R.string.emptyString);
 			}
-			if (lastReceivedGPSLocation != null && destinationLocation != null) {
-				rotateImage(lastReceivedGPSLocation.bearingTo(destinationLocation) - averageCompassData.getAverage().getX());
+			if (previousReceivedGPSLocation != null && destinationLocation != null) {
+				rotateImage(previousReceivedGPSLocation.bearingTo(destinationLocation) - averageCompassData.getAverage().getX());
 			}
+		} else {
+			getTextView(R.id.info1).setText(R.string.emptyString);
 		}
+	}
+
+	private boolean gpsIsUpdating() {
+		return (System.currentTimeMillis() - lastReceivedGPSLocationTime) < GPS_EXPECTED_UPDATE_TIME;
 	}
 
 	private void rotateImage(float angle) {
@@ -275,6 +305,8 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 			matrix.postRotate(angle);
 			Bitmap rotatedBitmap = Bitmap.createBitmap(arrow, 0, 0, arrow.getWidth(), arrow.getHeight(), matrix, true);
 			imageView.setImageBitmap(rotatedBitmap);
+			rotatedBitmap = null;
+			matrix = null;
 		}
 	}
 

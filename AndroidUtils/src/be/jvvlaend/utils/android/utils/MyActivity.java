@@ -3,6 +3,7 @@ package be.jvvlaend.utils.android.utils;
 import android.app.Activity;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class MyActivity extends Activity {
@@ -18,6 +19,10 @@ public class MyActivity extends Activity {
 	protected ImageView getImageView(int id) {
 		return (ImageView) findViewById(id);
 
+	}
+
+	public ListView getListView(int locationlist) {
+		return (ListView) findViewById(locationlist);
 	}
 
 }
