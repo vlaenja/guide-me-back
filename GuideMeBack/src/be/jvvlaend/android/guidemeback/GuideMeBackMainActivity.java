@@ -57,6 +57,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 		setContentView(R.layout.activity_guide_me_back_main);
 		arrow = BitmapFactory.decodeResource(getResources(), R.drawable.directionarrow);
 		initScreenData();
+		setScreenOn(true);
 	}
 
 	private void initScreenData() {
@@ -78,6 +79,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 			gpsTracker = null;
 			this.finish();
 		}
+		setScreenOn(false);
 	}
 
 	@Override
@@ -100,6 +102,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
+		setScreenOn(false);
 		if (compassSensor != null) {
 			compassSensor.stopCompass();
 			compassSensor = null;
@@ -121,6 +124,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 			compassSensor = new CompassSensor(this);
 		}
 		compassSensor.startCompass();
+		setScreenOn(true);
 	}
 
 	@Override
@@ -135,6 +139,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 			compassSensor = null;
 		}
 		backupSavedLocation();
+		setScreenOn(false);
 	}
 
 	@Override
@@ -147,6 +152,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 			compassSensor = new CompassSensor(this);
 		}
 		compassSensor.startCompass();
+		setScreenOn(true);
 	}
 
 	@Override
@@ -160,6 +166,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 			compassSensor.stopCompass();
 			compassSensor = null;
 		}
+		setScreenOn(false);
 	}
 
 	@Override
@@ -216,7 +223,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 		if (destinationLocation != null) {
 			showDistanceToDestination(location.distanceTo(destinationLocation));
 			rotateImage(calculateDirection(location, previousReceivedGPSLocation, destinationLocation));
-			getTextView(R.id.debugline1).setText(String.valueOf(calculateDirection(location, previousReceivedGPSLocation, destinationLocation)));
+			getTextView(R.id.debugline1).setText("GPS: " + String.valueOf(calculateDirection(location, previousReceivedGPSLocation, destinationLocation)));
 		}
 		keepLastGPSLocation(location);
 	}
@@ -226,6 +233,14 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 			return 0f;
 		}
 		return previousLocation.bearingTo(actualLocation) - actualLocation.bearingTo(destinationLocation);
+	}
+
+	private float calculateCompassDirection(Location previousLocation, AverageCompassData averageCompassData, Location destinationLocation) {
+		if (previousReceivedGPSLocation != null && destinationLocation != null) {
+			return averageCompassData.getAverage().getX() - previousReceivedGPSLocation.bearingTo(destinationLocation);
+		} else {
+			return 0f;
+		}
 	}
 
 	private void keepLastGPSLocation(Location location) {
@@ -277,6 +292,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 	public void onCompassSensorChanged(SensorEvent event) {
 		CompassData compassData = new CompassData(event);
 		averageCompassData.add(compassData);
+		getTextView(R.id.debugline2).setText("Compass: " + calculateCompassDirection(previousReceivedGPSLocation, averageCompassData, destinationLocation));
 		if (!gpsIsUpdating()) {
 
 			if ((Math.abs(compassData.getY()) > DEVICE_ALLOWED_LEVEL) || (Math.abs(compassData.getZ()) > DEVICE_ALLOWED_LEVEL)) {
@@ -284,9 +300,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 			} else {
 				getTextView(R.id.info1).setText(R.string.emptyString);
 			}
-			if (previousReceivedGPSLocation != null && destinationLocation != null) {
-				rotateImage(previousReceivedGPSLocation.bearingTo(destinationLocation) - averageCompassData.getAverage().getX());
-			}
+			rotateImage(calculateCompassDirection(previousReceivedGPSLocation, averageCompassData, destinationLocation));
 		} else {
 			getTextView(R.id.info1).setText(R.string.emptyString);
 		}

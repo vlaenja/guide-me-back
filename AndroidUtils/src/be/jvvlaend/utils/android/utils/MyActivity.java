@@ -1,6 +1,7 @@
 package be.jvvlaend.utils.android.utils;
 
 import android.app.Activity;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -25,4 +26,11 @@ public class MyActivity extends Activity {
 		return (ListView) findViewById(locationlist);
 	}
 
+	public void setScreenOn(boolean on) {
+		if (on) {
+			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		} else {
+			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		}
+	}
 }
