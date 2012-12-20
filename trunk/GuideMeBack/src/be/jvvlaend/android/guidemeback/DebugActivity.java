@@ -195,7 +195,7 @@ public class DebugActivity extends MyActivity implements LocationChanged, Compas
 			getTextView(R.id.debug_gpsRotationAngle).setText(formatCompassLocation(location.bearingTo(destinationLocation)));
 			rotateGPSImage(location.bearingTo(destinationLocation));
 		}
-		getTextView(R.id.speedData).setText(String.valueOf(location.getSpeed()));
+		getTextView(R.id.debug_speedData).setText(String.valueOf(location.getSpeed()));
 	}
 
 	private void backupSavedLocation() {
@@ -239,6 +239,8 @@ public class DebugActivity extends MyActivity implements LocationChanged, Compas
 		Bitmap rotatedBitmap = Bitmap.createBitmap(arrow, 0, 0, arrow.getWidth(), arrow.getHeight(), matrix, true);
 		imageView.setImageBitmap(rotatedBitmap);
 		getTextView(R.id.debug_gpsRotationAngle).setText(String.valueOf(angle));
+		rotatedBitmap = null;
+		matrix = null;
 	}
 
 	private void rotateCompassImage(float angle) {
@@ -252,6 +254,8 @@ public class DebugActivity extends MyActivity implements LocationChanged, Compas
 			Bitmap rotatedBitmap = Bitmap.createBitmap(arrow, 0, 0, arrow.getWidth(), arrow.getHeight(), matrix, true);
 			imageView.setImageBitmap(rotatedBitmap);
 			getTextView(R.id.debug_compassRotationAngle).setText(String.valueOf(angle));
+			rotatedBitmap = null;
+			matrix = null;
 		}
 	}
 }

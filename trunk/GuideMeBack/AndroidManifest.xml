@@ -32,6 +32,10 @@
             android:name="be.jvvlaend.android.guidemeback.DebugActivity"
             android:label="@string/title_activity_debug" >
         </activity>
+        <activity
+            android:name="be.jvvlaend.android.guidemeback.LocationsActivity"
+            android:label="@string/title_activity_locations" >
+        </activity>
     </application>
 
 </manifest>

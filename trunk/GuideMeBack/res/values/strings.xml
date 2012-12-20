@@ -22,5 +22,6 @@
     <string name="debug_loadSavedPositionButtonLabel">Load position</string>
     <string name="debug_speedLabel">Speed:</string>
     <string name="debug_arrowDescription">Arrow description</string>
+    <string name="title_activity_locations">LocationsActivity</string>
 
 </resources>
