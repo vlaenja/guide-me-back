@@ -1,0 +1,271 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/debug_currentPositionLabel"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:text="@string/debug_currentPosition" />
+
+        <TextView
+            android:id="@+id/debug_currentPositionLatitudeData"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:text="@string/emptyString" />
+
+        <TextView
+            android:id="@+id/debug_currentPositionLongitudeData"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:text="@string/emptyString" />
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/debug_destinationPositionLabel"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:text="@string/debug_destinationPosition" />
+
+        <TextView
+            android:id="@+id/debug_destinationPositionLatitudeData"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:text="@string/emptyString" />
+
+        <TextView
+            android:id="@+id/debug_destinationPositionLongitudeData"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:text="@string/emptyString" />
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/debug_distanceLabel"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:text="@string/debug_distanceLabelText" />
+
+        <TextView
+            android:id="@+id/debug_distanceToDestinationData"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:text="@string/emptyString" />
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/debug_speedLabel"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:text="@string/debug_speedLabel" />
+
+        <TextView
+            android:id="@+id/debug_speedData"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:text="@string/emptyString" />
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/debug_compassDataLabel"
+            android:layout_width="75dp"
+            android:layout_height="match_parent"
+            android:text="Compass:" />
+
+        <TextView
+            android:id="@+id/debug_compassXData"
+            android:layout_width="55dp"
+            android:layout_height="match_parent"
+            android:text="@string/emptyString" />
+
+        <TextView
+            android:id="@+id/debug_compassDataXLabel"
+            android:layout_width="15dp"
+            android:layout_height="match_parent"
+            android:text="x" />
+
+        <TextView
+            android:id="@+id/debug_compassYData"
+            android:layout_width="55dp"
+            android:layout_height="match_parent"
+            android:text="@string/emptyString" />
+
+        <TextView
+            android:id="@+id/debug_compassDataYLabel"
+            android:layout_width="15dp"
+            android:layout_height="match_parent"
+            android:text="y" />
+
+        <TextView
+            android:id="@+id/debug_compassZData"
+            android:layout_width="55dp"
+            android:layout_height="match_parent"
+            android:text="@string/emptyString" />
+
+        <TextView
+            android:id="@+id/debug_compassDataZLabel"
+            android:layout_width="15dp"
+            android:layout_height="match_parent"
+            android:text="z" />
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/debug_compassDeltaLabel"
+            android:layout_width="120dp"
+            android:layout_height="match_parent"
+            android:text="Compass Delta" />
+
+            <TextView
+            android:id="@+id/debug_compassDelta"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:text="@string/emptyString" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/debug_compassRotationAngleLabel"
+            android:layout_width="120dp"
+            android:layout_height="match_parent"
+            android:text="Compass direction" />
+        <TextView
+            android:id="@+id/debug_compassRotationAngle"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:text="@string/emptyString" />
+
+        
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/debug_gpsRotationAngleLabel"
+            android:layout_width="120dp"
+            android:layout_height="match_parent"
+            android:text="GPS direction" />
+        
+        <TextView
+            android:id="@+id/debug_gpsRotationAngle"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:text="@string/emptyString" />
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/debug_gpsImageleLabel"
+            android:layout_width="125dp"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:text="GPS" />
+        
+        <TextView
+            android:id="@+id/debug_compassImageLabel"
+            android:layout_width="125dp"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:text="Compass" />
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/debug_gpsDirectionImage"
+            android:layout_width="125dp"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/debug_arrowDescription"
+            android:gravity="center_vertical"
+            android:scaleType="centerInside"
+            android:src="@drawable/directionarrow" />
+
+        <ImageView
+            android:id="@+id/debug_compassDirectionImage"
+            android:layout_width="125dp"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/debug_arrowDescription"
+            android:gravity="center_vertical"
+            android:scaleType="centerInside"
+            android:src="@drawable/directionarrow" />
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/debug_savePositionButton"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:onClick="onClick"
+            android:text="@string/debug_quickSaveButtonLabel" />
+
+        <Button
+            android:id="@+id/debug_loadSavedPositionsButton"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:onClick="onClick"
+            android:text="@string/debug_loadSavedPositionButtonLabel" />
+    </LinearLayout>
+
+    
+</LinearLayout>

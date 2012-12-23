@@ -1,0 +1,156 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/speedLabel"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:text="@string/speedLabel"
+            android:textColor="@color/White"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/distanceLabel"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:text="@string/distanceLabel"
+            android:textColor="@color/White"
+            android:textSize="24sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/speedData"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/emptyString"
+            android:textColor="@color/White"
+            android:textSize="46sp" />
+
+        <TextView
+            android:id="@+id/distanceData"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/emptyString"
+            android:textColor="@color/White"
+            android:textSize="46sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="22dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/speedUnits"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:text="@string/speedunits"
+            android:textColor="@color/White"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/distanceUnits"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:text="@string/emptyString"
+            android:textColor="@color/White"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/info1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="left"
+            android:text="@string/emptyString"
+            android:textColor="@color/Bisque"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/directionImage"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:contentDescription="@string/debug_arrowDescription"
+            android:gravity="center_vertical"
+            android:scaleType="centerInside"
+            android:src="@drawable/directionarrow" />
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="88dp"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/debugline1"
+            android:layout_width="match_parent"
+            android:layout_height="22dp"
+            android:gravity="left"
+            android:text="@string/emptyString"
+            android:textColor="@color/Bisque"
+            android:textSize="16sp" />
+        <TextView
+            android:id="@+id/debugline2"
+            android:layout_width="match_parent"
+            android:layout_height="22dp"
+            android:gravity="left"
+            android:text="@string/emptyString"
+            android:textColor="@color/Bisque"
+            android:textSize="16sp" />
+        <TextView
+            android:id="@+id/debugline3"
+            android:layout_width="match_parent"
+            android:layout_height="22dp"
+            android:gravity="left"
+            android:text="@string/emptyString"
+            android:textColor="@color/Bisque"
+            android:textSize="16sp" />
+        <TextView
+            android:id="@+id/debugline4"
+            android:layout_width="match_parent"
+            android:layout_height="22dp"
+            android:gravity="left"
+            android:text="@string/emptyString"
+            android:textColor="@color/Bisque"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+</LinearLayout>
