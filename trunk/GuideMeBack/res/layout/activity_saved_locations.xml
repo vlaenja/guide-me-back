@@ -7,9 +7,9 @@
     tools:context=".LocationsActivity" >
 
     <ListView 
-        android:id="@+id/locationList"
+        android:id="@+id/savedLocationList"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:divider="@color/Aquamarine"
+        android:divider="@color/DarkGray"
         android:dividerHeight="1dp"></ListView>
 </LinearLayout>

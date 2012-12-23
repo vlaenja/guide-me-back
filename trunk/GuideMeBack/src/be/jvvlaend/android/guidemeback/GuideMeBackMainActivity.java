@@ -12,8 +12,8 @@ import android.location.Location;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 import be.jvvlaend.utils.android.compass.AverageCompassData;
 import be.jvvlaend.utils.android.compass.CompassChanged;
 import be.jvvlaend.utils.android.compass.CompassData;
@@ -24,6 +24,7 @@ import be.jvvlaend.utils.android.utils.MyActivity;
 import be.jvvlaend.utils.android.utils.Utils;
 
 public class GuideMeBackMainActivity extends MyActivity implements LocationChanged, CompassChanged {
+	private static final int RESULT_FOR_SAVED_LOCATION = 1;
 	private static final int DEVICE_ALLOWED_LEVEL = 25;
 	private static final int GPS_EXPECTED_UPDATE_TIME = 5000;
 	private static final String SAVED_LOCATION = "savedLocation";
@@ -179,24 +180,38 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		menu.findItem(R.id.menu_manage_locations).setEnabled(false);
 		menu.findItem(R.id.menu_settings).setEnabled(false);
-		menu.findItem(R.id.menu_stored_locations).setEnabled(false);
 		return super.onPrepareOptionsMenu(menu);
-	}
-
-	public void onClick(View view) {
 	}
 
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.menu_debug:
-			Intent intent = new Intent(this, DebugActivity.class);
-			startActivity(intent);
+			Intent debugIntent = new Intent(this, DebugActivity.class);
+			startActivity(debugIntent);
 			return true;
-		case R.id.menu_quick_save:
+			// case R.id.menu_quick_save:
+			// if (previousReceivedGPSLocation != null) {
+			// destinationLocation = previousReceivedGPSLocation;
+			// quickSaveLocation(destinationLocation);
+			// }
+			// break;
+		case R.id.menu_quick_save_car:
 			if (previousReceivedGPSLocation != null) {
 				destinationLocation = previousReceivedGPSLocation;
-				quickSaveLocation(destinationLocation);
+				quickSaveLocation("Quick save car", destinationLocation);
+			}
+			break;
+		case R.id.menu_quick_save_home:
+			if (previousReceivedGPSLocation != null) {
+				destinationLocation = previousReceivedGPSLocation;
+				quickSaveLocation("Quick save home", destinationLocation);
+			}
+			break;
+		case R.id.menu_quick_save_hotel:
+			if (previousReceivedGPSLocation != null) {
+				destinationLocation = previousReceivedGPSLocation;
+				quickSaveLocation("Quick save hotel", destinationLocation);
 			}
 			break;
 		case R.id.menu_manage_locations:
@@ -204,14 +219,28 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 		case R.id.menu_settings:
 			break;
 		case R.id.menu_stored_locations:
-			break;
+			Intent storedLocationsIntent = new Intent(this, SavedLocationsActivity.class);
+			startActivityForResult(storedLocationsIntent, RESULT_FOR_SAVED_LOCATION);
+			return true;
 		}
 		return super.onMenuItemSelected(featureId, item);
 	}
 
-	private void quickSaveLocation(Location location) {
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == RESULT_FOR_SAVED_LOCATION) {
+			if (resultCode == RESULT_OK) {
+				destinationLocation = data.getParcelableExtra("NEW_LOCATION");
+				Toast.makeText(this, "New destination", Toast.LENGTH_LONG).show();
+			}
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	private void quickSaveLocation(String omschrijving, Location location) {
 		SavedLocation savedLocation = new SavedLocation(location);
-		savedLocation.setOmschrijving("Quick save");
+		savedLocation.setOmschrijving(omschrijving);
+		savedLocation.setTime(System.currentTimeMillis());
 		GuideMeBackDbHelper dbHelper = new GuideMeBackDbHelper(this);
 		dbHelper.insertLocation(savedLocation);
 		dbHelper = null;
@@ -223,7 +252,6 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 		if (destinationLocation != null) {
 			showDistanceToDestination(location.distanceTo(destinationLocation));
 			rotateImage(calculateDirection(location, previousReceivedGPSLocation, destinationLocation));
-			getTextView(R.id.debugline1).setText("GPS: " + String.valueOf(calculateDirection(location, previousReceivedGPSLocation, destinationLocation)));
 		}
 		keepLastGPSLocation(location);
 	}
@@ -232,12 +260,17 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 		if (actualLocation == null || previousLocation == null || destinationLocation == null) {
 			return 0f;
 		}
-		return previousLocation.bearingTo(actualLocation) - actualLocation.bearingTo(destinationLocation);
+		getTextView(R.id.debugline2).setText("GPS moving direction: " + previousLocation.bearingTo(actualLocation));
+		getTextView(R.id.debugline3).setText("GPS destination direction: " + actualLocation.bearingTo(destinationLocation));
+		getTextView(R.id.debugline4).setText("Image rot.: " + (previousLocation.bearingTo(actualLocation) - actualLocation.bearingTo(destinationLocation)) * (-1f));
+		// TODO: uitzoeken waarom ik met -1 moet vermenigvuldigen...
+		// Proefondervindelijk is het dan in orde :-)
+		return (previousLocation.bearingTo(actualLocation) - actualLocation.bearingTo(destinationLocation)) * (-1f);
 	}
 
 	private float calculateCompassDirection(Location previousLocation, AverageCompassData averageCompassData, Location destinationLocation) {
 		if (previousReceivedGPSLocation != null && destinationLocation != null) {
-			return averageCompassData.getAverage().getX() - previousReceivedGPSLocation.bearingTo(destinationLocation);
+			return (averageCompassData.getAverage().getX() - previousReceivedGPSLocation.bearingTo(destinationLocation)) * (-1f);
 		} else {
 			return 0f;
 		}
@@ -292,7 +325,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 	public void onCompassSensorChanged(SensorEvent event) {
 		CompassData compassData = new CompassData(event);
 		averageCompassData.add(compassData);
-		getTextView(R.id.debugline2).setText("Compass: " + calculateCompassDirection(previousReceivedGPSLocation, averageCompassData, destinationLocation));
+		getTextView(R.id.debugline1).setText("Compass orientation: " + averageCompassData.getAverage().getX());
 		if (!gpsIsUpdating()) {
 
 			if ((Math.abs(compassData.getY()) > DEVICE_ALLOWED_LEVEL) || (Math.abs(compassData.getZ()) > DEVICE_ALLOWED_LEVEL)) {
