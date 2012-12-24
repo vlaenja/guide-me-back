@@ -53,7 +53,7 @@ public class GuideMeBackDbHelper extends SQLiteOpenHelper {
 		SQLiteDatabase db = getWritableDatabase();
 		String[] values = { id };
 		db.delete(GuideMeBackDbEntry.TABLE_NAME, GuideMeBackDbEntry._ID + "= ?", values);
-		this.close();
+		db.close();
 	}
 
 	public void insertLocation(SavedLocation savedLocation) {
@@ -73,6 +73,14 @@ public class GuideMeBackDbHelper extends SQLiteOpenHelper {
 	public void deleteAllSavedLocations() {
 		SQLiteDatabase db = getWritableDatabase();
 		db.delete(GuideMeBackDbEntry.TABLE_NAME, null, null);
-		this.close();
+		db.close();
+	}
+
+	public void updateSavedLocation(SavedLocation updatedLocation) {
+		SQLiteDatabase db = getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put(GuideMeBackDbEntry.COLUMN_OMSCHRIJVING, updatedLocation.getOmschrijving());
+		db.update(GuideMeBackDbEntry.TABLE_NAME, values, GuideMeBackDbEntry._ID + " = " + updatedLocation.getId(), null);
+		db.close();
 	}
 }

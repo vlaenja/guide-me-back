@@ -24,13 +24,6 @@ import be.jvvlaend.utils.android.utils.MyActivity;
 import be.jvvlaend.utils.android.utils.Utils;
 
 public class GuideMeBackMainActivity extends MyActivity implements LocationChanged, CompassChanged {
-	private static final int RESULT_FOR_SAVED_LOCATION = 1;
-	private static final int DEVICE_ALLOWED_LEVEL = 25;
-	private static final int GPS_EXPECTED_UPDATE_TIME = 5000;
-	private static final String SAVED_LOCATION = "savedLocation";
-	private static final String SAVED_LOCATION_PROVIDER = "savedLocationProvider";
-	private static final String SAVED_LOCATION_LATITUDE = "savedLocationLatitude";
-	private static final String SAVED_LOCATION_LONGITUDE = "savedLocationLongitude";
 	private GPSTracker gpsTracker;
 	private Location destinationLocation;
 	private Location previousReceivedGPSLocation = null;
@@ -44,7 +37,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (savedInstanceState != null) {
-			destinationLocation = (Location) savedInstanceState.getParcelable(SAVED_LOCATION);
+			destinationLocation = (Location) savedInstanceState.getParcelable(Constant.SAVED_LOCATION);
 		} else {
 			// Maybe previously backed-up
 			destinationLocation = restoreSavedlocation();
@@ -88,7 +81,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 		if (bundle == null) {
 			bundle = new Bundle();
 		}
-		bundle.putParcelable(SAVED_LOCATION, destinationLocation);
+		bundle.putParcelable(Constant.SAVED_LOCATION, destinationLocation);
 		super.onSaveInstanceState(bundle);
 	}
 
@@ -96,7 +89,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
 		if (savedInstanceState != null) {
-			destinationLocation = (Location) savedInstanceState.getParcelable(SAVED_LOCATION);
+			destinationLocation = (Location) savedInstanceState.getParcelable(Constant.SAVED_LOCATION);
 		}
 	}
 
@@ -190,12 +183,6 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 			Intent debugIntent = new Intent(this, DebugActivity.class);
 			startActivity(debugIntent);
 			return true;
-			// case R.id.menu_quick_save:
-			// if (previousReceivedGPSLocation != null) {
-			// destinationLocation = previousReceivedGPSLocation;
-			// quickSaveLocation(destinationLocation);
-			// }
-			// break;
 		case R.id.menu_quick_save_car:
 			if (previousReceivedGPSLocation != null) {
 				destinationLocation = previousReceivedGPSLocation;
@@ -220,7 +207,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 			break;
 		case R.id.menu_stored_locations:
 			Intent storedLocationsIntent = new Intent(this, SavedLocationsActivity.class);
-			startActivityForResult(storedLocationsIntent, RESULT_FOR_SAVED_LOCATION);
+			startActivityForResult(storedLocationsIntent, Constant.RESULT_FOR_SAVED_LOCATION);
 			return true;
 		}
 		return super.onMenuItemSelected(featureId, item);
@@ -228,10 +215,11 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == RESULT_FOR_SAVED_LOCATION) {
+		if (requestCode == Constant.RESULT_FOR_SAVED_LOCATION) {
 			if (resultCode == RESULT_OK) {
-				destinationLocation = data.getParcelableExtra("NEW_LOCATION");
-				Toast.makeText(this, "New destination", Toast.LENGTH_LONG).show();
+				destinationLocation = data.getParcelableExtra(Constant.NEW_LOCATION_DATA);
+				String locationDescription = data.getStringExtra(Constant.NEW_LOCATION_DESCRIPTION);
+				Toast.makeText(this, locationDescription + " set.", Toast.LENGTH_LONG).show();
 			}
 		}
 		super.onActivityResult(requestCode, resultCode, data);
@@ -302,20 +290,20 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 		if (destinationLocation != null) {
 			SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
 			Editor editor = sharedPreferences.edit();
-			editor.putString(SAVED_LOCATION_PROVIDER, String.valueOf(destinationLocation.getProvider()));
-			editor.putString(SAVED_LOCATION_LATITUDE, String.valueOf(destinationLocation.getLatitude()));
-			editor.putString(SAVED_LOCATION_LONGITUDE, String.valueOf(destinationLocation.getLongitude()));
+			editor.putString(Constant.SAVED_LOCATION_PROVIDER, String.valueOf(destinationLocation.getProvider()));
+			editor.putString(Constant.SAVED_LOCATION_LATITUDE, String.valueOf(destinationLocation.getLatitude()));
+			editor.putString(Constant.SAVED_LOCATION_LONGITUDE, String.valueOf(destinationLocation.getLongitude()));
 			editor.commit();
 		}
 	}
 
 	private Location restoreSavedlocation() {
 		SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
-		String provider = sharedPreferences.getString(SAVED_LOCATION_PROVIDER, null);
+		String provider = sharedPreferences.getString(Constant.SAVED_LOCATION_PROVIDER, null);
 		if (provider != null) {
 			Location location = new Location(provider);
-			location.setLatitude(Double.valueOf(sharedPreferences.getString(SAVED_LOCATION_LATITUDE, "0")));
-			location.setLongitude(Double.valueOf(sharedPreferences.getString(SAVED_LOCATION_LONGITUDE, "0")));
+			location.setLatitude(Double.valueOf(sharedPreferences.getString(Constant.SAVED_LOCATION_LATITUDE, "0")));
+			location.setLongitude(Double.valueOf(sharedPreferences.getString(Constant.SAVED_LOCATION_LONGITUDE, "0")));
 			return location;
 		}
 		return null;
@@ -328,7 +316,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 		getTextView(R.id.debugline1).setText("Compass orientation: " + averageCompassData.getAverage().getX());
 		if (!gpsIsUpdating()) {
 
-			if ((Math.abs(compassData.getY()) > DEVICE_ALLOWED_LEVEL) || (Math.abs(compassData.getZ()) > DEVICE_ALLOWED_LEVEL)) {
+			if ((Math.abs(compassData.getY()) > Constant.DEVICE_ALLOWED_LEVEL) || (Math.abs(compassData.getZ()) > Constant.DEVICE_ALLOWED_LEVEL)) {
 				getTextView(R.id.info1).setText(R.string.keepLevel);
 			} else {
 				getTextView(R.id.info1).setText(R.string.emptyString);
@@ -340,7 +328,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 	}
 
 	private boolean gpsIsUpdating() {
-		return (System.currentTimeMillis() - lastReceivedGPSLocationTime) < GPS_EXPECTED_UPDATE_TIME;
+		return (System.currentTimeMillis() - lastReceivedGPSLocationTime) < Constant.GPS_EXPECTED_UPDATE_TIME;
 	}
 
 	private void rotateImage(float angle) {
