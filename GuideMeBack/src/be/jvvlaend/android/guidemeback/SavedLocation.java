@@ -1,8 +1,14 @@
 package be.jvvlaend.android.guidemeback;
 
+import java.io.Serializable;
+
 import android.location.Location;
 
-public class SavedLocation {
+public class SavedLocation implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String id = null;
 	private String omschrijving = null;
 	private Location gpsLocation = new Location("");

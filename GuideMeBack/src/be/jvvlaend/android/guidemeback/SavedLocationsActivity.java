@@ -20,6 +20,8 @@ public class SavedLocationsActivity extends MyActivity {
 	private ListView savedLocationsListView;
 	private ArrayList<SavedLocation> savedLocations;
 	private GuideMeBackDbHelper dbHelper = new GuideMeBackDbHelper(this);
+	private int selectedElement = 0;
+	private SavedLocationsAdapter savedLocationsadapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,19 +31,21 @@ public class SavedLocationsActivity extends MyActivity {
 		savedLocationsListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> listView, View element, int position, long id) {
-				Log.d("SavedLocationsActivity", "position clicked = " + position);
-				Intent intent = new Intent();
-				intent.putExtra("NEW_LOCATION", savedLocations.get(position).getGpsLocation());
-				setResult(RESULT_OK, intent);
-				finish();
+			public void onItemClick(AdapterView<?> listView, View clickedView, int position, long id) {
+				selectedElement = position;
+				savedLocationsadapter.setSelectedElement(position);
 			}
 		});
 		savedLocationsListView.setOnItemLongClickListener(new OnItemLongClickListener() {
 
 			@Override
-			public boolean onItemLongClick(AdapterView<?> listView, View element, int position, long id) {
-				dbHelper.deleteSavedLocation(savedLocations.get(position).getId());
+			public boolean onItemLongClick(AdapterView<?> listView, View clickedView, int position, long id) {
+				Log.d("SavedLocationsActivity", "position longclicked = " + position);
+				Intent intent = new Intent();
+				intent.putExtra(Constant.NEW_LOCATION_DATA, savedLocations.get(position).getGpsLocation());
+				intent.putExtra(Constant.NEW_LOCATION_DESCRIPTION, savedLocations.get(position).getOmschrijving());
+				setResult(RESULT_OK, intent);
+				finish();
 				return true;
 			}
 		});
@@ -68,14 +72,31 @@ public class SavedLocationsActivity extends MyActivity {
 			Toast.makeText(this, "All locations deleted", Toast.LENGTH_SHORT).show();
 			finish();
 			break;
+		case R.id.menu_savedLocation_edit:
+			Intent editIntent = new Intent(this, EditSavedLocationActivity.class);
+			editIntent.putExtra(Constant.EDIT_OMSCHRIJVING, savedLocations.get(selectedElement).getOmschrijving());
+			startActivityForResult(editIntent, Constant.EDIT_OMSCHRIJVING_RESULT);
+			break;
 		}
 		return super.onMenuItemSelected(featureId, item);
 	}
 
 	private void fillList() {
 		savedLocations = dbHelper.getSavedLocations();
-		SavedLocationsAdapter adapter = new SavedLocationsAdapter(this, R.layout.saved_location_detail, savedLocations);
-		savedLocationsListView.setAdapter(adapter);
+		savedLocationsadapter = new SavedLocationsAdapter(this, R.layout.saved_location_detail, savedLocations);
+		savedLocationsadapter.setNotifyOnChange(true);
+		savedLocationsListView.setAdapter(savedLocationsadapter);
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == Constant.EDIT_OMSCHRIJVING_RESULT) {
+			if (resultCode == RESULT_OK) {
+				String nieuweOmschrijving = data.getStringExtra(Constant.EDIT_OMSCHRIJVING);
+				savedLocations.get(selectedElement).setOmschrijving(nieuweOmschrijving);
+				dbHelper.updateSavedLocation(savedLocations.get(selectedElement));
+			}
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
 }

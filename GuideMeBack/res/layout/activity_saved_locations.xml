@@ -6,7 +6,7 @@
     android:orientation="vertical"
     tools:context=".LocationsActivity" >
 
-    <ListView 
+    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/savedLocationList"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

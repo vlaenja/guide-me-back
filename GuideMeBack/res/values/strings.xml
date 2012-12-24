@@ -10,6 +10,9 @@
     <string name="menu_stored_locations">Stored locations</string>
     <string name="menu_manage_locations">Manage locations</string>
     <string name="menu_debug">Debug</string>
+    <string name="button_Ok">OK</string>
+    <string name="button_Save">Save</string>
+    <string name="button_Cancel">Cancel</string>
     <string name="title_activity_guide_me_back_main">GuideMeBack</string>
     <string name="emptyString"></string>
     <string name="hello_world">Hello world!</string>
@@ -26,5 +29,6 @@
     <string name="debug_speedLabel">Speed:</string>
     <string name="debug_arrowDescription">Arrow description</string>
     <string name="title_activity_locations">LocationsActivity</string>
+    <string name="title_activity_edit_saved_location">EditSavedLocationActivity</string>
 
 </resources>
