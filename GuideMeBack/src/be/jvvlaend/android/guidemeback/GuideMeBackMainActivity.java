@@ -173,6 +173,11 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		menu.findItem(R.id.menu_manage_locations).setEnabled(false);
 		menu.findItem(R.id.menu_settings).setEnabled(false);
+		if (previousReceivedGPSLocation == null) {
+			menu.findItem(R.id.menu_quick_save).setEnabled(false);
+		} else {
+			menu.findItem(R.id.menu_quick_save).setEnabled(true);
+		}
 		return super.onPrepareOptionsMenu(menu);
 	}
 
@@ -187,20 +192,26 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 			if (previousReceivedGPSLocation != null) {
 				destinationLocation = previousReceivedGPSLocation;
 				quickSaveLocation("Quick save car", destinationLocation);
+			} else {
+				Toast.makeText(this, Constant.UNKNOWN_GPS_LOCATION, Toast.LENGTH_LONG).show();
 			}
-			break;
+			return true;
 		case R.id.menu_quick_save_home:
 			if (previousReceivedGPSLocation != null) {
 				destinationLocation = previousReceivedGPSLocation;
 				quickSaveLocation("Quick save home", destinationLocation);
+			} else {
+				Toast.makeText(this, Constant.UNKNOWN_GPS_LOCATION, Toast.LENGTH_LONG).show();
 			}
-			break;
+			return true;
 		case R.id.menu_quick_save_hotel:
 			if (previousReceivedGPSLocation != null) {
 				destinationLocation = previousReceivedGPSLocation;
 				quickSaveLocation("Quick save hotel", destinationLocation);
+			} else {
+				Toast.makeText(this, Constant.UNKNOWN_GPS_LOCATION, Toast.LENGTH_LONG).show();
 			}
-			break;
+			return true;
 		case R.id.menu_manage_locations:
 			break;
 		case R.id.menu_settings:
@@ -219,7 +230,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 			if (resultCode == RESULT_OK) {
 				destinationLocation = data.getParcelableExtra(Constant.NEW_LOCATION_DATA);
 				String locationDescription = data.getStringExtra(Constant.NEW_LOCATION_DESCRIPTION);
-				Toast.makeText(this, locationDescription + " set.", Toast.LENGTH_LONG).show();
+				Toast.makeText(this, locationDescription + " set.", Toast.LENGTH_SHORT).show();
 			}
 		}
 		super.onActivityResult(requestCode, resultCode, data);
@@ -232,6 +243,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 		GuideMeBackDbHelper dbHelper = new GuideMeBackDbHelper(this);
 		dbHelper.insertLocation(savedLocation);
 		dbHelper = null;
+		Toast.makeText(this, omschrijving + " saved.", Toast.LENGTH_LONG).show();
 	}
 
 	@Override

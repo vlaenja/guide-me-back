@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,26 +12,24 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
-import be.jvvlaend.utils.android.utils.MyActivity;
+import be.jvvlaend.utils.android.utils.MyListActivity;
 
-public class SavedLocationsActivity extends MyActivity {
+public class SavedLocationsActivity extends MyListActivity {
 
 	private ListView savedLocationsListView;
 	private ArrayList<SavedLocation> savedLocations;
 	private GuideMeBackDbHelper dbHelper = new GuideMeBackDbHelper(this);
-	private int selectedElement = 0;
 	private SavedLocationsAdapter savedLocationsadapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_saved_locations);
-		savedLocationsListView = getListView(R.id.savedLocationList);
+		savedLocationsListView = getListView();
 		savedLocationsListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> listView, View clickedView, int position, long id) {
-				selectedElement = position;
 				savedLocationsadapter.setSelectedElement(position);
 			}
 		});
@@ -40,7 +37,6 @@ public class SavedLocationsActivity extends MyActivity {
 
 			@Override
 			public boolean onItemLongClick(AdapterView<?> listView, View clickedView, int position, long id) {
-				Log.d("SavedLocationsActivity", "position longclicked = " + position);
 				Intent intent = new Intent();
 				intent.putExtra(Constant.NEW_LOCATION_DATA, savedLocations.get(position).getGpsLocation());
 				intent.putExtra(Constant.NEW_LOCATION_DESCRIPTION, savedLocations.get(position).getOmschrijving());
@@ -61,12 +57,30 @@ public class SavedLocationsActivity extends MyActivity {
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
+		if (savedLocationsadapter.isEmpty()) {
+			menu.findItem(R.id.menu_savedLocation_delete).setEnabled(false);
+			menu.findItem(R.id.menu_savedLocation_deleteAll).setEnabled(false);
+			menu.findItem(R.id.menu_savedLocation_edit).setEnabled(false);
+			menu.findItem(R.id.menu_savedLocation_set).setEnabled(false);
+		}
 		return super.onPrepareOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		switch (item.getItemId()) {
+		case R.id.menu_savedLocation_set:
+			Intent intent = new Intent();
+			intent.putExtra(Constant.NEW_LOCATION_DATA, savedLocations.get(savedLocationsadapter.getSelectedElement()).getGpsLocation());
+			intent.putExtra(Constant.NEW_LOCATION_DESCRIPTION, savedLocations.get(savedLocationsadapter.getSelectedElement()).getOmschrijving());
+			setResult(RESULT_OK, intent);
+			finish();
+			break;
+		case R.id.menu_savedLocation_delete:
+			dbHelper.deleteSavedLocation(savedLocations.get(savedLocationsadapter.getSelectedElement()).getId());
+			savedLocations.remove(savedLocationsadapter.getSelectedElement());
+			savedLocationsadapter.notifyDataSetChanged();
+			break;
 		case R.id.menu_savedLocation_deleteAll:
 			dbHelper.deleteAllSavedLocations();
 			Toast.makeText(this, "All locations deleted", Toast.LENGTH_SHORT).show();
@@ -74,7 +88,7 @@ public class SavedLocationsActivity extends MyActivity {
 			break;
 		case R.id.menu_savedLocation_edit:
 			Intent editIntent = new Intent(this, EditSavedLocationActivity.class);
-			editIntent.putExtra(Constant.EDIT_OMSCHRIJVING, savedLocations.get(selectedElement).getOmschrijving());
+			editIntent.putExtra(Constant.EDIT_OMSCHRIJVING, savedLocations.get(savedLocationsadapter.getSelectedElement()).getOmschrijving());
 			startActivityForResult(editIntent, Constant.EDIT_OMSCHRIJVING_RESULT);
 			break;
 		}
@@ -92,9 +106,10 @@ public class SavedLocationsActivity extends MyActivity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == Constant.EDIT_OMSCHRIJVING_RESULT) {
 			if (resultCode == RESULT_OK) {
-				String nieuweOmschrijving = data.getStringExtra(Constant.EDIT_OMSCHRIJVING);
-				savedLocations.get(selectedElement).setOmschrijving(nieuweOmschrijving);
-				dbHelper.updateSavedLocation(savedLocations.get(selectedElement));
+				String nieuweOmschrijving = data.getStringExtra(Constant.EDIT_NIEUWE_OMSCHRIJVING);
+				savedLocations.get(savedLocationsadapter.getSelectedElement()).setOmschrijving(nieuweOmschrijving);
+				dbHelper.updateSavedLocation(savedLocations.get(savedLocationsadapter.getSelectedElement()));
+				savedLocationsadapter.notifyDataSetChanged();
 			}
 		}
 		super.onActivityResult(requestCode, resultCode, data);

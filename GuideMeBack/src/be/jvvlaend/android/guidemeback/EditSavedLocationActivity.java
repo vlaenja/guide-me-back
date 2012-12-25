@@ -47,8 +47,13 @@ public class EditSavedLocationActivity extends MyActivity {
 		switch (view.getId()) {
 		case R.id.editSavedLocationButtonOk:
 			Intent intent = new Intent();
-			intent.putExtra(Constant.EDIT_OMSCHRIJVING, getTextView(R.id.editSavedLocationDescription).getText());
-			setResult(RESULT_OK, intent);
+			String nieuweOmschrijving = getTextView(R.id.editSavedLocationDescription).getText().toString();
+			intent.putExtra(Constant.EDIT_NIEUWE_OMSCHRIJVING, nieuweOmschrijving);
+			if (getParent() == null) {
+				setResult(RESULT_OK, intent);
+			} else {
+				getParent().setResult(RESULT_OK, intent);
+			}
 			finish();
 			break;
 		case R.id.editSavedLocationButtonCancel:
