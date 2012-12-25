@@ -4,7 +4,6 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,12 +29,11 @@ public class SavedLocationsAdapter extends ArrayAdapter<SavedLocation> {
 	@Override
 	public View getView(int position, View convertRow, ViewGroup parent) {
 		View row = convertRow;
-		Log.d("Adapter", "getView:position=" + position + " selected=" + selectedElement);
 		if (row == null) {
 			LayoutInflater layoutInflater = ((Activity) context).getLayoutInflater();
 			row = layoutInflater.inflate(layoutResourceId, parent, false);
 		}
-		if (selectedElement == position) {
+		if (getSelectedElement() == position) {
 			row.setBackgroundColor(color.LightSalmon);
 		} else {
 			row.setBackgroundColor(color.LightGrey);
@@ -50,5 +48,17 @@ public class SavedLocationsAdapter extends ArrayAdapter<SavedLocation> {
 		selectedElement = position;
 		notifyDataSetChanged();
 
+	}
+
+	public int getSelectedElement() {
+		if (isEmpty()) {
+			return -1;
+		} else {
+			return (selectedElement >= savedData.size()) ? savedData.size() - 1 : selectedElement;
+		}
+	}
+
+	public boolean isEmpty() {
+		return savedData.isEmpty();
 	}
 }
