@@ -18,6 +18,7 @@ import be.jvvlaend.utils.android.compass.AverageCompassData;
 import be.jvvlaend.utils.android.compass.CompassChanged;
 import be.jvvlaend.utils.android.compass.CompassData;
 import be.jvvlaend.utils.android.compass.CompassSensor;
+import be.jvvlaend.utils.android.gps.AveragerGPSData;
 import be.jvvlaend.utils.android.gps.GPSTracker;
 import be.jvvlaend.utils.android.gps.LocationChanged;
 import be.jvvlaend.utils.android.utils.MyActivity;
@@ -31,6 +32,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 	private Bitmap arrow = null;
 	private CompassSensor compassSensor = null;
 	private AverageCompassData averageCompassData = new AverageCompassData();
+	private AveragerGPSData averagerGPSData = new AveragerGPSData();
 	private float imageRotationAngle;
 
 	@Override
@@ -249,9 +251,10 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 	@Override
 	public void onLocationChanged(Location location) {
 		showActualSpeed(location.getSpeed());
+		averagerGPSData.add(location);
 		if (destinationLocation != null) {
 			showDistanceToDestination(location.distanceTo(destinationLocation));
-			rotateImage(calculateDirection(location, previousReceivedGPSLocation, destinationLocation));
+			rotateImage(calculateDirection(averagerGPSData.getAverage(), previousReceivedGPSLocation, destinationLocation));
 		}
 		keepLastGPSLocation(location);
 	}
