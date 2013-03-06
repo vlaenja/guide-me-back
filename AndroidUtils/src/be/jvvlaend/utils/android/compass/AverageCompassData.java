@@ -7,10 +7,10 @@ public class AverageCompassData {
 	private ArrayList<CompassData> dataList = new ArrayList<CompassData>(CAPACITY);
 
 	public void add(CompassData compassData) {
-		dataList.add(compassData);
-		if (dataList.size() > CAPACITY) {
+		if (dataList.size() == CAPACITY) {
 			dataList.remove(0);
 		}
+		dataList.add(compassData);
 	}
 
 	public CompassData getAverage() {
