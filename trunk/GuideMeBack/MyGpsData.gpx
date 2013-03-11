@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1" creator="MapSource 6.13.7" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensions/v3/GpxExtensionsv3.xsd http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+
+  <metadata>
+    <link href="http://www.garmin.com">
+      <text>Garmin International</text>
+    </link>
+    <time>2012-12-01T23:15:48Z</time>
+    <bounds maxlat="55.9903270" maxlon="-4.2884790" minlat="55.9864190" minlon="-4.2904940"/>
+  </metadata>
+
+  <trk>
+    <name>MyGpsData</name>
+    <extensions>
+      <gpxx:TrackExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
+        <gpxx:DisplayColor>White</gpxx:DisplayColor>
+      </gpxx:TrackExtension>
+    </extensions>
+    <trkseg>
+      <trkpt lat="0.000" lon="0.000">
+        <ele>139.5590000</ele>
+        <time>2012-08-25T08:00:00Z</time>
+      </trkpt>
+      <trkpt lat="0.001" lon="0.000">
+        <ele>139.5590000</ele>
+        <time>2012-08-25T08:00:01Z</time>
+      </trkpt>
+      <trkpt lat="0.002" lon="0.000">
+        <ele>139.5590000</ele>
+        <time>2012-08-25T08:00:02Z</time>
+      </trkpt>
+      <trkpt lat="0.003" lon="0.000">
+        <ele>139.5590000</ele>
+        <time>2012-08-25T08:00:03Z</time>
+      </trkpt>
+      <trkpt lat="0.004" lon="0.000">
+        <ele>139.5590000</ele>
+        <time>2012-08-25T08:00:04Z</time>
+      </trkpt>
+      <trkpt lat="0.005" lon="0.000">
+        <ele>139.5590000</ele>
+        <time>2012-08-25T08:00:05Z</time>
+      </trkpt>
+      <trkpt lat="0.006" lon="0.000">
+        <ele>139.5590000</ele>
+        <time>2012-08-25T08:00:06Z</time>
+      </trkpt>
+      <trkpt lat="0.007" lon="0.000">
+        <ele>139.5590000</ele>
+        <time>2012-08-25T08:00:07Z</time>
+      </trkpt>
+      <trkpt lat="0.008" lon="0.000">
+        <ele>139.5590000</ele>
+        <time>2012-08-25T08:00:08Z</time>
+      </trkpt>
+      <trkpt lat="0.009" lon="0.000">
+        <ele>139.5590000</ele>
+        <time>2012-08-25T08:00:09Z</time>
+      </trkpt>
+      <trkpt lat="0.010" lon="0.000">
+        <ele>139.5590000</ele>
+        <time>2012-08-25T08:00:10Z</time>
+      </trkpt>
+      <trkpt lat="0.011" lon="0.000">
+        <ele>139.5590000</ele>
+        <time>2012-08-25T08:00:11Z</time>
+      </trkpt>
+      <trkpt lat="0.012" lon="0.000">
+        <ele>139.5590000</ele>
+        <time>2012-08-25T08:00:12Z</time>
+      </trkpt>
+      <trkpt lat="0.013" lon="0.000">
+        <ele>139.5590000</ele>
+        <time>2012-08-25T08:00:13Z</time>
+      </trkpt>
+      <trkpt lat="0.014" lon="0.000">
+        <ele>139.5590000</ele>
+        <time>2012-08-25T08:00:14Z</time>
+      </trkpt>
+      <trkpt lat="0.015" lon="0.000">
+        <ele>139.5590000</ele>
+        <time>2012-08-25T08:00:15Z</time>
+      </trkpt>
+      <trkpt lat="0.016" lon="0.000">
+        <ele>139.5590000</ele>
+        <time>2012-08-25T08:00:16Z</time>
+      </trkpt>
+      <trkpt lat="0.017" lon="0.000">
+        <ele>139.5590000</ele>
+        <time>2012-08-25T08:00:17Z</time>
+      </trkpt>
+      <trkpt lat="0.018" lon="0.000">
+        <ele>139.5590000</ele>
+        <time>2012-08-25T08:00:18Z</time>
+      </trkpt>
+      <trkpt lat="0.019" lon="0.000">
+        <ele>139.5590000</ele>
+        <time>2012-08-25T08:00:19Z</time>
+      </trkpt>
+      <trkpt lat="0.020" lon="0.000">
+        <ele>139.5590000</ele>
+        <time>2012-08-25T08:00:20Z</time>
+      </trkpt>
+    </trkseg>
+  </trk>
+
+</gpx>
