@@ -6,7 +6,7 @@ import android.location.Location;
 
 public class AveragerGPSData {
 	private static final String AVERAGE = "AVERAGE";
-	private static final int CAPACITY = 5;
+	private static final int CAPACITY = 3;
 	private ArrayList<Location> allData = new ArrayList<Location>(CAPACITY);
 
 	public void add(Location location) {
