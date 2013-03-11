@@ -256,7 +256,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 			showDistanceToDestination(location.distanceTo(destinationLocation));
 			rotateImage(calculateDirection(averagerGPSData.getAverage(), previousReceivedGPSLocation, destinationLocation));
 		}
-		keepLastGPSLocation(location);
+		keepLastGPSLocation(averagerGPSData.getAverage());
 	}
 
 	private float calculateDirection(Location actualLocation, Location previousLocation, Location destinationLocation) {
@@ -266,6 +266,9 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 		getTextView(R.id.debugline2).setText("GPS moving direction: " + previousLocation.bearingTo(actualLocation));
 		getTextView(R.id.debugline3).setText("GPS destination direction: " + actualLocation.bearingTo(destinationLocation));
 		getTextView(R.id.debugline4).setText("Image rot.: " + (previousLocation.bearingTo(actualLocation) - actualLocation.bearingTo(destinationLocation)) * (-1f));
+		System.out.println("GPS moving direction: " + previousLocation.bearingTo(actualLocation));
+		System.out.println("GPS destination direction: " + actualLocation.bearingTo(destinationLocation));
+		System.out.println("Image rot.: " + (previousLocation.bearingTo(actualLocation) - actualLocation.bearingTo(destinationLocation)) * (-1f));
 		// TODO: uitzoeken waarom ik met -1 moet vermenigvuldigen...
 		// Proefondervindelijk is het dan in orde :-)
 		return (previousLocation.bearingTo(actualLocation) - actualLocation.bearingTo(destinationLocation)) * (-1f);
