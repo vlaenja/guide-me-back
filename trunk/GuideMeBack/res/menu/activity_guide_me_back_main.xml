@@ -25,9 +25,9 @@
         android:orderInCategory="120"
         android:title="@string/menu_stored_locations"/>
     <item
-        android:id="@+id/menu_manage_locations"
+        android:id="@+id/menu_clipboard"
         android:orderInCategory="130"
-        android:title="@string/menu_manage_locations"/>
+        android:title="@string/menu_clipboard"/>
     <item
         android:id="@+id/menu_debug"
         android:orderInCategory="140"
