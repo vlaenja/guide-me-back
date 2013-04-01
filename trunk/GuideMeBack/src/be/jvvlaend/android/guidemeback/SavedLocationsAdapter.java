@@ -41,6 +41,8 @@ public class SavedLocationsAdapter extends ArrayAdapter<SavedLocation> {
 		SavedLocation savedLocation = savedData.get(position);
 		((TextView) row.findViewById(R.id.savedLocationOmschrijving)).setText(savedLocation.getOmschrijving());
 		((TextView) row.findViewById(R.id.savedLocationTime)).setText(Utils.formatDate(savedLocation.getTime()));
+		((TextView) row.findViewById(R.id.savedLocationLat)).setText("Lat: " + savedLocation.getGpsLocation().getLatitude());
+		((TextView) row.findViewById(R.id.savedLocationLong)).setText("Long: " + savedLocation.getGpsLocation().getLongitude());
 		return row;
 	}
 

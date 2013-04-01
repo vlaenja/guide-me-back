@@ -14,5 +14,6 @@ public final class Constant {
 	public static final String EDIT_NIEUWE_OMSCHRIJVING = "EDIT_NIEUWE_OMSCHRIJVING";
 	public static final int EDIT_OMSCHRIJVING_RESULT = 2;
 	public static final String UNKNOWN_GPS_LOCATION = "GPS location not known";
+	public static final String LOCATION_SAVED_IN_CLIPBOARD = "Saved to clipboard";
 
 }

@@ -1,5 +1,6 @@
 package be.jvvlaend.android.guidemeback;
 
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -173,12 +174,13 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		menu.findItem(R.id.menu_manage_locations).setEnabled(false);
 		menu.findItem(R.id.menu_settings).setEnabled(false);
 		if (previousReceivedGPSLocation == null) {
 			menu.findItem(R.id.menu_quick_save).setEnabled(false);
+			menu.findItem(R.id.menu_clipboard).setEnabled(false);
 		} else {
 			menu.findItem(R.id.menu_quick_save).setEnabled(true);
+			menu.findItem(R.id.menu_clipboard).setEnabled(true);
 		}
 		return super.onPrepareOptionsMenu(menu);
 	}
@@ -214,7 +216,8 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 				Toast.makeText(this, Constant.UNKNOWN_GPS_LOCATION, Toast.LENGTH_LONG).show();
 			}
 			return true;
-		case R.id.menu_manage_locations:
+		case R.id.menu_clipboard:
+			saveLocationToClipboard();
 			break;
 		case R.id.menu_settings:
 			break;
@@ -263,12 +266,8 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 		if (actualLocation == null || previousLocation == null || destinationLocation == null) {
 			return 0f;
 		}
-		getTextView(R.id.debugline2).setText("GPS moving direction: " + previousLocation.bearingTo(actualLocation));
-		getTextView(R.id.debugline3).setText("GPS destination direction: " + actualLocation.bearingTo(destinationLocation));
-		getTextView(R.id.debugline4).setText("Image rot.: " + (previousLocation.bearingTo(actualLocation) - actualLocation.bearingTo(destinationLocation)) * (-1f));
-		System.out.println("GPS moving direction: " + previousLocation.bearingTo(actualLocation));
-		System.out.println("GPS destination direction: " + actualLocation.bearingTo(destinationLocation));
-		System.out.println("Image rot.: " + (previousLocation.bearingTo(actualLocation) - actualLocation.bearingTo(destinationLocation)) * (-1f));
+		getTextView(R.id.debugline2).setText("Lattitude: " + actualLocation.getLatitude());
+		getTextView(R.id.debugline3).setText("Longitude: " + actualLocation.getLongitude());
 		// TODO: uitzoeken waarom ik met -1 moet vermenigvuldigen...
 		// Proefondervindelijk is het dan in orde :-)
 		return (previousLocation.bearingTo(actualLocation) - actualLocation.bearingTo(destinationLocation)) * (-1f);
@@ -363,4 +362,9 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 		}
 	}
 
+	private void saveLocationToClipboard() {
+		ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+		clipboardManager.setText("Lat: " + previousReceivedGPSLocation.getLatitude() + " Long: " + previousReceivedGPSLocation.getLongitude());
+		Toast.makeText(this, Constant.LOCATION_SAVED_IN_CLIPBOARD, Toast.LENGTH_LONG).show();
+	}
 }
