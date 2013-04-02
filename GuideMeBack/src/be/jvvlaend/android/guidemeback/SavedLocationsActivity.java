@@ -3,6 +3,7 @@ package be.jvvlaend.android.guidemeback;
 import java.util.ArrayList;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,10 +21,12 @@ public class SavedLocationsActivity extends MyListActivity {
 	private ArrayList<SavedLocation> savedLocations;
 	private GuideMeBackDbHelper dbHelper = new GuideMeBackDbHelper(this);
 	private SavedLocationsAdapter savedLocationsadapter;
+	private Location actualLocation;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		actualLocation = getIntent().getExtras().getParcelable(Constant.ACTUAL_LOCATION);
 		setContentView(R.layout.activity_saved_locations);
 		savedLocationsListView = getListView();
 		savedLocationsListView.setOnItemClickListener(new OnItemClickListener() {
@@ -97,7 +100,7 @@ public class SavedLocationsActivity extends MyListActivity {
 
 	private void fillList() {
 		savedLocations = dbHelper.getSavedLocations();
-		savedLocationsadapter = new SavedLocationsAdapter(this, R.layout.saved_location_detail, savedLocations);
+		savedLocationsadapter = new SavedLocationsAdapter(this, R.layout.saved_location_detail, savedLocations, actualLocation);
 		savedLocationsadapter.setNotifyOnChange(true);
 		savedLocationsListView.setAdapter(savedLocationsadapter);
 	}
