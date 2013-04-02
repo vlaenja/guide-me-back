@@ -176,10 +176,10 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		menu.findItem(R.id.menu_settings).setEnabled(false);
 		if (previousReceivedGPSLocation == null) {
-			menu.findItem(R.id.menu_quick_save).setEnabled(false);
+			menu.findItem(R.id.menu_save).setEnabled(false);
 			menu.findItem(R.id.menu_clipboard).setEnabled(false);
 		} else {
-			menu.findItem(R.id.menu_quick_save).setEnabled(true);
+			menu.findItem(R.id.menu_save).setEnabled(true);
 			menu.findItem(R.id.menu_clipboard).setEnabled(true);
 		}
 		return super.onPrepareOptionsMenu(menu);
@@ -191,6 +191,16 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 		case R.id.menu_debug:
 			Intent debugIntent = new Intent(this, DebugActivity.class);
 			startActivity(debugIntent);
+			return true;
+		case R.id.menu_quick_save_location:
+			if (previousReceivedGPSLocation != null) {
+				destinationLocation = previousReceivedGPSLocation;
+				Intent editIntent = new Intent(this, EditSavedLocationActivity.class);
+				editIntent.putExtra(Constant.EDIT_OMSCHRIJVING, "");
+				startActivityForResult(editIntent, Constant.EDIT_OMSCHRIJVING_RESULT);
+			} else {
+				Toast.makeText(this, Constant.UNKNOWN_GPS_LOCATION, Toast.LENGTH_LONG).show();
+			}
 			return true;
 		case R.id.menu_quick_save_car:
 			if (previousReceivedGPSLocation != null) {
@@ -223,6 +233,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 			break;
 		case R.id.menu_stored_locations:
 			Intent storedLocationsIntent = new Intent(this, SavedLocationsActivity.class);
+			storedLocationsIntent.putExtra(Constant.ACTUAL_LOCATION, previousReceivedGPSLocation);
 			startActivityForResult(storedLocationsIntent, Constant.RESULT_FOR_SAVED_LOCATION);
 			return true;
 		}
@@ -236,6 +247,11 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 				destinationLocation = data.getParcelableExtra(Constant.NEW_LOCATION_DATA);
 				String locationDescription = data.getStringExtra(Constant.NEW_LOCATION_DESCRIPTION);
 				Toast.makeText(this, locationDescription + " set.", Toast.LENGTH_SHORT).show();
+			}
+		}
+		if (requestCode == Constant.EDIT_OMSCHRIJVING_RESULT) {
+			if (resultCode == RESULT_OK) {
+				quickSaveLocation(data.getStringExtra(Constant.EDIT_NIEUWE_OMSCHRIJVING), destinationLocation);
 			}
 		}
 		super.onActivityResult(requestCode, resultCode, data);
@@ -256,7 +272,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 		showActualSpeed(location.getSpeed());
 		averagerGPSData.add(location);
 		if (destinationLocation != null) {
-			showDistanceToDestination(location.distanceTo(destinationLocation));
+			formatDistanceToDestination(location.distanceTo(destinationLocation));
 			rotateImage(calculateDirection(averagerGPSData.getAverage(), previousReceivedGPSLocation, destinationLocation));
 		}
 		keepLastGPSLocation(averagerGPSData.getAverage());
@@ -266,8 +282,10 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 		if (actualLocation == null || previousLocation == null || destinationLocation == null) {
 			return 0f;
 		}
-		getTextView(R.id.debugline2).setText("Lattitude: " + actualLocation.getLatitude());
-		getTextView(R.id.debugline3).setText("Longitude: " + actualLocation.getLongitude());
+		// getTextView(R.id.debugline2).setText("Lattitude: " +
+		// actualLocation.getLatitude());
+		// getTextView(R.id.debugline3).setText("Longitude: " +
+		// actualLocation.getLongitude());
 		// TODO: uitzoeken waarom ik met -1 moet vermenigvuldigen...
 		// Proefondervindelijk is het dan in orde :-)
 		return (previousLocation.bearingTo(actualLocation) - actualLocation.bearingTo(destinationLocation)) * (-1f);
@@ -291,7 +309,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 
 	}
 
-	private void showDistanceToDestination(float distanceTo) {
+	private void formatDistanceToDestination(float distanceTo) {
 		int distance = Float.valueOf(distanceTo).intValue();
 		if (distance < 10000) {
 			getTextView(R.id.distanceUnits).setText("m");
@@ -330,7 +348,8 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 	public void onCompassSensorChanged(SensorEvent event) {
 		CompassData compassData = new CompassData(event);
 		averageCompassData.add(compassData);
-		getTextView(R.id.debugline1).setText("Compass orientation: " + averageCompassData.getAverage().getX());
+		// getTextView(R.id.debugline1).setText("Compass orientation: " +
+		// averageCompassData.getAverage().getX());
 		if (!gpsIsUpdating()) {
 
 			if ((Math.abs(compassData.getY()) > Constant.DEVICE_ALLOWED_LEVEL) || (Math.abs(compassData.getZ()) > Constant.DEVICE_ALLOWED_LEVEL)) {

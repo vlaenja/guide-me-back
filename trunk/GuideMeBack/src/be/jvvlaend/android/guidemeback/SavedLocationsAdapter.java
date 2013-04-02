@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.location.Location;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +19,14 @@ public class SavedLocationsAdapter extends ArrayAdapter<SavedLocation> {
 	private List<SavedLocation> savedData;
 	private int layoutResourceId;
 	private int selectedElement = 0;
+	private Location actualLocation;
 
-	public SavedLocationsAdapter(Context context, int layoutResourceId, List<SavedLocation> savedData) {
+	public SavedLocationsAdapter(Context context, int layoutResourceId, List<SavedLocation> savedData, Location actualLocation) {
 		super(context, layoutResourceId, savedData);
 		this.context = context;
 		this.savedData = savedData;
 		this.layoutResourceId = layoutResourceId;
+		this.actualLocation = actualLocation;
 	}
 
 	@Override
@@ -41,6 +44,11 @@ public class SavedLocationsAdapter extends ArrayAdapter<SavedLocation> {
 		SavedLocation savedLocation = savedData.get(position);
 		((TextView) row.findViewById(R.id.savedLocationOmschrijving)).setText(savedLocation.getOmschrijving());
 		((TextView) row.findViewById(R.id.savedLocationTime)).setText(Utils.formatDate(savedLocation.getTime()));
+		if (actualLocation == null) {
+			((TextView) row.findViewById(R.id.savedLocationDistance)).setText("--");
+		} else {
+			((TextView) row.findViewById(R.id.savedLocationDistance)).setText(Utils.formatDistanceToDestinationWithUnits(actualLocation.distanceTo(savedLocation.getGpsLocation())));
+		}
 		((TextView) row.findViewById(R.id.savedLocationLat)).setText("Lat: " + savedLocation.getGpsLocation().getLatitude());
 		((TextView) row.findViewById(R.id.savedLocationLong)).setText("Long: " + savedLocation.getGpsLocation().getLongitude());
 		return row;
