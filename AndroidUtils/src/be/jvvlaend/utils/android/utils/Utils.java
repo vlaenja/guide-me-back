@@ -19,4 +19,15 @@ public class Utils {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		return dateFormat.format(date);
 	}
+
+	public static String formatDistanceToDestinationWithUnits(float distanceTo) {
+		int distance = Float.valueOf(distanceTo).intValue();
+		if (distance < 10000) {
+			return String.valueOf(distance) + " m";
+		} else {
+			return String.valueOf(Utils.afrondenTotCijfersNaKomma(distance / 1000f, 2)) + " Km";
+		}
+
+	}
+
 }
