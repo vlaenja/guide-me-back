@@ -19,7 +19,7 @@
     <string name="speedLabel">Speed</string>
     <string name="distanceLabel">Distance</string>
     <string name="speedunits">Km/h</string>
-    <string name="keepLevel">Hou toestel horizontaal</string>
+    <string name="keepLevel">Keep device level</string>
     <string name="title_activity_debug">Debug</string>
     <string name="debug_currentPosition">Current position:</string>
     <string name="debug_destinationPosition">Destination position:</string>
@@ -30,5 +30,17 @@
     <string name="debug_arrowDescription">Arrow description</string>
     <string name="title_activity_locations">LocationsActivity</string>
     <string name="title_activity_edit_saved_location">EditSavedLocationActivity</string>
-
+	<string name="set">Set</string>
+	<string name="edit">Edit</string>
+	<string name="delete">Delete</string>
+	<string name="delete_all">Delete All</string>
+	<string name="no_data">--</string>
+	<string name="quick_save_home">Quick save home</string>
+	<string name="quick_save_car">Quick save car</string>
+	<string name="quick_save_hotel">Quick save hotel</string>
+	<string name="pos_set"> set.</string>
+	<string name="pos_saved"> saved.</string>
+	<string name="label_lat">Lat: </string>
+	<string name="label_long">Long: </string>
+	<string name="all_locations_deleted">All locations deleted</string>
 </resources>
