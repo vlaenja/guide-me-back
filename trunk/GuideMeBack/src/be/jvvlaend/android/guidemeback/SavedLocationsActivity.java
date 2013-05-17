@@ -86,7 +86,7 @@ public class SavedLocationsActivity extends MyListActivity {
 			break;
 		case R.id.menu_savedLocation_deleteAll:
 			dbHelper.deleteAllSavedLocations();
-			Toast.makeText(this, "All locations deleted", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, getResources().getString(R.string.all_locations_deleted), Toast.LENGTH_SHORT).show();
 			finish();
 			break;
 		case R.id.menu_savedLocation_edit:
