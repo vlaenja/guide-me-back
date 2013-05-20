@@ -2,7 +2,6 @@ package be.jvvlaend.android.guidemeback;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,7 +36,8 @@ public class EditSavedLocationActivity extends MyActivity {
 			//
 			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
 			//
-			NavUtils.navigateUpFromSameTask(this);
+//			NavUtils.navigateUpFromSameTask(this);
+			this.finish();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
