@@ -55,6 +55,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 		arrow = BitmapFactory.decodeResource(getResources(), R.drawable.directionarrow);
 		initScreenData();
 		setScreenOn(true);
+		invalidateOptionsMenu();
 	}
 
 	private void initScreenData() {
@@ -175,13 +176,8 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		menu.findItem(R.id.menu_settings).setEnabled(false);
-		if (previousReceivedGPSLocation == null) {
-			menu.findItem(R.id.menu_save).setEnabled(false);
-			menu.findItem(R.id.menu_clipboard).setEnabled(false);
-		} else {
-			menu.findItem(R.id.menu_save).setEnabled(true);
-			menu.findItem(R.id.menu_clipboard).setEnabled(true);
-		}
+		menu.findItem(R.id.menu_save).setEnabled(true);
+		menu.findItem(R.id.menu_clipboard).setEnabled(true);
 		return super.onPrepareOptionsMenu(menu);
 	}
 
@@ -227,7 +223,11 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 			}
 			return true;
 		case R.id.menu_clipboard:
-			saveLocationToClipboard();
+			if (previousReceivedGPSLocation != null) {
+				saveLocationToClipboard();
+			} else {
+				Toast.makeText(this, Constant.UNKNOWN_GPS_LOCATION, Toast.LENGTH_LONG).show();
+			}
 			break;
 		case R.id.menu_settings:
 			break;
@@ -246,7 +246,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 			if (resultCode == RESULT_OK) {
 				destinationLocation = data.getParcelableExtra(Constant.NEW_LOCATION_DATA);
 				String locationDescription = data.getStringExtra(Constant.NEW_LOCATION_DESCRIPTION);
-				Toast.makeText(this, locationDescription + getResources().getString(R.string.pos_set), Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, locationDescription + " " + getResources().getString(R.string.pos_set), Toast.LENGTH_SHORT).show();
 			}
 		}
 		if (requestCode == Constant.EDIT_OMSCHRIJVING_RESULT) {
@@ -264,7 +264,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 		GuideMeBackDbHelper dbHelper = new GuideMeBackDbHelper(this);
 		dbHelper.insertLocation(savedLocation);
 		dbHelper = null;
-		Toast.makeText(this, omschrijving + getResources().getString(R.string.pos_saved), Toast.LENGTH_LONG).show();
+		Toast.makeText(this, omschrijving + " " + getResources().getString(R.string.pos_saved), Toast.LENGTH_LONG).show();
 	}
 
 	@Override
@@ -377,7 +377,8 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 
 	private void saveLocationToClipboard() {
 		ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-		clipboardManager.setText(getResources().getString(R.string.label_lat) + previousReceivedGPSLocation.getLatitude() + " " + getResources().getString(R.string.label_long) + previousReceivedGPSLocation.getLongitude());
+		clipboardManager.setText(getResources().getString(R.string.label_lat) + previousReceivedGPSLocation.getLatitude() + " " + getResources().getString(R.string.label_long)
+				+ previousReceivedGPSLocation.getLongitude());
 		Toast.makeText(this, Constant.LOCATION_SAVED_IN_CLIPBOARD, Toast.LENGTH_LONG).show();
 	}
 }
