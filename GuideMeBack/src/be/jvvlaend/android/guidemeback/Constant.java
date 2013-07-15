@@ -16,5 +16,6 @@ public final class Constant {
 	public static final String UNKNOWN_GPS_LOCATION = "GPS location not known";
 	public static final String LOCATION_SAVED_IN_CLIPBOARD = "Saved to clipboard";
 	public static final String ACTUAL_LOCATION = "ACTUAL_LOCATION";
+	public static final String SCREEN_ON = "SCREEN_ON";
 
 }

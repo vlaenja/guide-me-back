@@ -5,7 +5,6 @@
     android:layout_height="wrap_content"
     android:orientation="vertical" >
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="25dp"
         android:orientation="horizontal" >
@@ -30,7 +29,6 @@
     </LinearLayout>
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="25dp"
         android:orientation="horizontal" >
@@ -55,7 +53,6 @@
     </LinearLayout>
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="25dp"
         android:orientation="horizontal" >
@@ -74,7 +71,6 @@
     </LinearLayout>
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="25dp"
         android:orientation="horizontal" >
@@ -93,7 +89,6 @@
     </LinearLayout>
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="25dp"
         android:orientation="horizontal" >
@@ -142,7 +137,6 @@
     </LinearLayout>
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="25dp"
         android:orientation="horizontal" >
@@ -162,7 +156,6 @@
     </LinearLayout>
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="25dp"
         android:orientation="horizontal" >
@@ -182,7 +175,6 @@
     </LinearLayout>
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="25dp"
         android:orientation="horizontal" >
@@ -201,7 +193,6 @@
     </LinearLayout>
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="25dp"
         android:orientation="horizontal" >
@@ -222,7 +213,6 @@
     </LinearLayout>
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:orientation="horizontal" >
@@ -231,7 +221,7 @@
             android:id="@+id/debug_gpsDirectionImage"
             android:layout_width="125dp"
             android:layout_height="match_parent"
-            android:contentDescription="@string/debug_arrowDescription"
+            android:contentDescription="@string/arrowDescription"
             android:gravity="center_vertical"
             android:scaleType="centerInside"
             android:src="@drawable/directionarrow" />
@@ -240,14 +230,13 @@
             android:id="@+id/debug_compassDirectionImage"
             android:layout_width="125dp"
             android:layout_height="match_parent"
-            android:contentDescription="@string/debug_arrowDescription"
+            android:contentDescription="@string/arrowDescription"
             android:gravity="center_vertical"
             android:scaleType="centerInside"
             android:src="@drawable/directionarrow" />
     </LinearLayout>
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal" >
