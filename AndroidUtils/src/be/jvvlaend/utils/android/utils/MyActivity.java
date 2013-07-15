@@ -3,6 +3,7 @@ package be.jvvlaend.utils.android.utils;
 import android.app.Activity;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -19,6 +20,11 @@ public class MyActivity extends Activity {
 
 	protected ImageView getImageView(int id) {
 		return (ImageView) findViewById(id);
+
+	}
+
+	protected CheckBox getCheckBox(int id) {
+		return (CheckBox) findViewById(id);
 
 	}
 
