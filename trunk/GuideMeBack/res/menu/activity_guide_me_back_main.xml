@@ -1,10 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/menu_settings"
-        android:orderInCategory="100"
-        android:title="@string/menu_settings"/>
-    <item
         android:id="@+id/menu_save"
         android:orderInCategory="110"
         android:title="@string/menu_save">
@@ -32,8 +28,12 @@
         android:orderInCategory="130"
         android:title="@string/menu_clipboard"/>
     <item
-        android:id="@+id/menu_debug"
+        android:id="@+id/menu_settings"
         android:orderInCategory="140"
+        android:title="@string/menu_settings"/>
+    <item
+        android:id="@+id/menu_debug"
+        android:orderInCategory="150"
         android:title="@string/menu_debug" android:visible="false"/>
 
 </menu>

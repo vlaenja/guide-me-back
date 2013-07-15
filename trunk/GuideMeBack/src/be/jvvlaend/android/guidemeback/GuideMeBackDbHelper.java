@@ -19,8 +19,9 @@ public class GuideMeBackDbHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		String createStatement = "CREATE TABLE IF NOT EXISTS " + GuideMeBackDbEntry.TABLE_NAME + " ( " + GuideMeBackDbEntry._ID + " INTEGER PRIMARY KEY, " + GuideMeBackDbEntry.COLUMN_OMSCHRIJVING + " TEXT, " + GuideMeBackDbEntry.COLUMN_PROVIDER
-				+ " TEXT, " + GuideMeBackDbEntry.COLUMN_TIMESTAMP + " DATE, " + GuideMeBackDbEntry.COLUMN_LONGITUDE + " REAL, " + GuideMeBackDbEntry.COLUMN_LATITUDE + " REAL )";
+		String createStatement = "CREATE TABLE IF NOT EXISTS " + GuideMeBackDbEntry.TABLE_NAME + " ( " + GuideMeBackDbEntry._ID + " INTEGER PRIMARY KEY, " + GuideMeBackDbEntry.COLUMN_OMSCHRIJVING
+				+ " TEXT, " + GuideMeBackDbEntry.COLUMN_PROVIDER + " TEXT, " + GuideMeBackDbEntry.COLUMN_TIMESTAMP + " DATE, " + GuideMeBackDbEntry.COLUMN_LONGITUDE + " REAL, "
+				+ GuideMeBackDbEntry.COLUMN_LATITUDE + " REAL )";
 		db.execSQL(createStatement);
 	}
 

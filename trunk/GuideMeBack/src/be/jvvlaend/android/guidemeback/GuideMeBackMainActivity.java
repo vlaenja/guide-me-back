@@ -54,7 +54,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 		setContentView(R.layout.activity_guide_me_back_main);
 		arrow = BitmapFactory.decodeResource(getResources(), R.drawable.directionarrow);
 		initScreenData();
-		setScreenOn(true);
+		setScreenOn(ParameterDbHelper.getParameterScreenOn(this));
 		invalidateOptionsMenu();
 	}
 
@@ -95,6 +95,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 		if (savedInstanceState != null) {
 			destinationLocation = (Location) savedInstanceState.getParcelable(Constant.SAVED_LOCATION);
 		}
+		setScreenOn(ParameterDbHelper.getParameterScreenOn(this));
 	}
 
 	@Override
@@ -150,7 +151,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 			compassSensor = new CompassSensor(this);
 		}
 		compassSensor.startCompass();
-		setScreenOn(true);
+		setScreenOn(ParameterDbHelper.getParameterScreenOn(this));
 	}
 
 	@Override
@@ -175,7 +176,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		menu.findItem(R.id.menu_settings).setEnabled(false);
+		menu.findItem(R.id.menu_settings).setEnabled(true);
 		menu.findItem(R.id.menu_save).setEnabled(true);
 		menu.findItem(R.id.menu_clipboard).setEnabled(true);
 		return super.onPrepareOptionsMenu(menu);
@@ -230,7 +231,11 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 			}
 			break;
 		case R.id.menu_settings:
-			break;
+			Intent settingsActivity = new Intent(this, MySetupActivity.class);
+			// Intent settingsActivity = new Intent(this,
+			// SettingsActivity.class);
+			startActivity(settingsActivity);
+			return true;
 		case R.id.menu_stored_locations:
 			Intent storedLocationsIntent = new Intent(this, SavedLocationsActivity.class);
 			storedLocationsIntent.putExtra(Constant.ACTUAL_LOCATION, previousReceivedGPSLocation);
@@ -381,4 +386,5 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 				+ previousReceivedGPSLocation.getLongitude());
 		Toast.makeText(this, Constant.LOCATION_SAVED_IN_CLIPBOARD, Toast.LENGTH_LONG).show();
 	}
+
 }
