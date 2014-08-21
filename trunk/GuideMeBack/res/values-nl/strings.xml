@@ -43,6 +43,9 @@
 	<string name="pos_saved"> bewaard.</string>
 	<string name="label_lat">Lat: </string>
 	<string name="label_long">Long: </string>
+	<string name="editLocationDescription">Omschrijving</string>
+    <string name="editLatitudeDescription">Latitude</string>
+    <string name="editLongitudeDescription">Longitude</string>	
 	<string name="label_KeepScreenOn">Scherm steeds aan</string>
    	<string name="all_locations_deleted">Alle locaties zijn verwijderd.</string>
 </resources>

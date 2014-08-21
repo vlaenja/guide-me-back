@@ -11,8 +11,9 @@ public final class Constant {
 	public static final String SAVED_LOCATION_LATITUDE = "savedLocationLatitude";
 	public static final String SAVED_LOCATION_LONGITUDE = "savedLocationLongitude";
 	public static final String EDIT_OMSCHRIJVING = "EDIT_OMSCHRIJVING";
-	public static final String EDIT_NIEUWE_OMSCHRIJVING = "EDIT_NIEUWE_OMSCHRIJVING";
-	public static final int EDIT_OMSCHRIJVING_RESULT = 2;
+	public static final String EDIT_LONGITUDE = "EDIT_LONGITUDE";
+	public static final String EDIT_LATITUDE = "EDIT_LATITUDE";
+	public static final int RESULT_EDIT_LOCATION = 2;
 	public static final String UNKNOWN_GPS_LOCATION = "GPS location not known";
 	public static final String LOCATION_SAVED_IN_CLIPBOARD = "Saved to clipboard";
 	public static final String ACTUAL_LOCATION = "ACTUAL_LOCATION";
