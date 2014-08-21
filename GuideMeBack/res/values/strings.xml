@@ -47,7 +47,10 @@
     <string name="all_locations_deleted">All locations deleted</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-    <string name="version_info">Version: 1.0</string> 
+    <string name="editLocationDescription">Description</string>
+    <string name="editLatitudeDescription">Latitude</string>
+    <string name="editLongitudeDescription">Longitude</string>
+    <string name="version_info">Version: 1.0.a</string> 
 	<string name="developer_info">Developer : Jan Van Vlaenderen</string>
 
 </resources>

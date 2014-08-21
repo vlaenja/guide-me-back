@@ -27,8 +27,6 @@ public class GuideMeBackDbHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public ArrayList<SavedLocation> getSavedLocations() {
@@ -81,6 +79,8 @@ public class GuideMeBackDbHelper extends SQLiteOpenHelper {
 		SQLiteDatabase db = getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(GuideMeBackDbEntry.COLUMN_OMSCHRIJVING, updatedLocation.getOmschrijving());
+		values.put(GuideMeBackDbEntry.COLUMN_LATITUDE, updatedLocation.getLatitude());
+		values.put(GuideMeBackDbEntry.COLUMN_LONGITUDE, updatedLocation.getLongitudee());
 		db.update(GuideMeBackDbEntry.TABLE_NAME, values, GuideMeBackDbEntry._ID + " = " + updatedLocation.getId(), null);
 		db.close();
 	}

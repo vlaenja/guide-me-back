@@ -91,8 +91,13 @@ public class SavedLocationsActivity extends MyListActivity {
 			break;
 		case R.id.menu_savedLocation_edit:
 			Intent editIntent = new Intent(this, EditSavedLocationActivity.class);
-			editIntent.putExtra(Constant.EDIT_OMSCHRIJVING, savedLocations.get(savedLocationsadapter.getSelectedElement()).getOmschrijving());
-			startActivityForResult(editIntent, Constant.EDIT_OMSCHRIJVING_RESULT);
+			Bundle extras = new Bundle();
+			SavedLocation location = savedLocations.get(savedLocationsadapter.getSelectedElement());
+			extras.putString(Constant.EDIT_OMSCHRIJVING, location.getOmschrijving());
+			extras.putDouble(Constant.EDIT_LATITUDE, location.getLatitude());
+			extras.putDouble(Constant.EDIT_LONGITUDE, location.getLongitudee());
+			editIntent.putExtras(extras);
+			startActivityForResult(editIntent, Constant.RESULT_EDIT_LOCATION);
 			break;
 		}
 		return super.onMenuItemSelected(featureId, item);
@@ -107,11 +112,17 @@ public class SavedLocationsActivity extends MyListActivity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == Constant.EDIT_OMSCHRIJVING_RESULT) {
+		if (requestCode == Constant.RESULT_EDIT_LOCATION) {
 			if (resultCode == RESULT_OK) {
-				String nieuweOmschrijving = data.getStringExtra(Constant.EDIT_NIEUWE_OMSCHRIJVING);
-				savedLocations.get(savedLocationsadapter.getSelectedElement()).setOmschrijving(nieuweOmschrijving);
-				dbHelper.updateSavedLocation(savedLocations.get(savedLocationsadapter.getSelectedElement()));
+				Bundle extras = data.getExtras();
+				String nieuweOmschrijving = extras.getString(Constant.EDIT_OMSCHRIJVING);
+				double latitude = extras.getDouble(Constant.EDIT_LATITUDE);
+				double longitude = extras.getDouble(Constant.EDIT_LONGITUDE);
+				SavedLocation location = savedLocations.get(savedLocationsadapter.getSelectedElement());
+				location.setOmschrijving(nieuweOmschrijving);
+				location.setLatitude(latitude);
+				location.setLongitude(longitude);
+				dbHelper.updateSavedLocation(location);
 				savedLocationsadapter.notifyDataSetChanged();
 			}
 		}

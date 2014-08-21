@@ -6,6 +6,13 @@
     android:orientation="vertical"
     tools:context=".EditSavedLocationActivity" >
 
+    <TextView
+        android:id="@+id/textLocationDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/editLocationDescription"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
     <EditText
         android:id="@+id/editSavedLocationDescription"
         android:layout_width="match_parent"
@@ -19,8 +26,36 @@
     <TextView android:layout_height="30dp"
         android:layout_width="match_parent" />
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <TextView
+        android:id="@+id/textLongitudeDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/editLongitudeDescription"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    
+    <EditText
+        android:id="@+id/editLongitude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="numberDecimal" />
+
+    <TextView
+        android:id="@+id/textEditLatitiude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/editLatitudeDescription"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    
+    <EditText
+        android:id="@+id/editLatitude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="numberDecimal" />
+
+    <LinearLayout 
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:orientation="horizontal" >

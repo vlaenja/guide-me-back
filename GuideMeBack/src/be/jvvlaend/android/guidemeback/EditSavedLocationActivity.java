@@ -15,7 +15,10 @@ public class EditSavedLocationActivity extends MyActivity {
 		setContentView(R.layout.activity_edit_saved_location);
 		// Show the Up button in the action bar.
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getTextView(R.id.editSavedLocationDescription).setText((String) getIntent().getExtras().get(Constant.EDIT_OMSCHRIJVING));
+		Bundle extras = getIntent().getExtras();
+		getTextView(R.id.editSavedLocationDescription).setText(extras.getString(Constant.EDIT_OMSCHRIJVING));
+		getTextView(R.id.editLatitude).setText(String.valueOf(extras.getDouble(Constant.EDIT_LATITUDE)));
+		getTextView(R.id.editLongitude).setText(String.valueOf(extras.getDouble(Constant.EDIT_LONGITUDE)));
 	}
 
 	@Override
@@ -36,7 +39,7 @@ public class EditSavedLocationActivity extends MyActivity {
 			//
 			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
 			//
-//			NavUtils.navigateUpFromSameTask(this);
+			// NavUtils.navigateUpFromSameTask(this);
 			this.finish();
 			return true;
 		}
@@ -48,7 +51,13 @@ public class EditSavedLocationActivity extends MyActivity {
 		case R.id.editSavedLocationButtonOk:
 			Intent intent = new Intent();
 			String nieuweOmschrijving = getTextView(R.id.editSavedLocationDescription).getText().toString();
-			intent.putExtra(Constant.EDIT_NIEUWE_OMSCHRIJVING, nieuweOmschrijving);
+			Double latitude = Double.valueOf(getTextView(R.id.editLatitude).getText().toString());
+			Double longitude = Double.valueOf(getTextView(R.id.editLongitude).getText().toString());
+			Bundle extras = new Bundle();
+			extras.putString(Constant.EDIT_OMSCHRIJVING, nieuweOmschrijving);
+			extras.putDouble(Constant.EDIT_LATITUDE, latitude);
+			extras.putDouble(Constant.EDIT_LONGITUDE, longitude);
+			intent.putExtras(extras);
 			if (getParent() == null) {
 				setResult(RESULT_OK, intent);
 			} else {

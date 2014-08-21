@@ -193,8 +193,12 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 			if (previousReceivedGPSLocation != null) {
 				destinationLocation = previousReceivedGPSLocation;
 				Intent editIntent = new Intent(this, EditSavedLocationActivity.class);
-				editIntent.putExtra(Constant.EDIT_OMSCHRIJVING, "");
-				startActivityForResult(editIntent, Constant.EDIT_OMSCHRIJVING_RESULT);
+				Bundle extras = new Bundle(3);
+				extras.putString(Constant.EDIT_OMSCHRIJVING, "");
+				extras.putDouble(Constant.EDIT_LONGITUDE, destinationLocation.getLongitude());
+				extras.putDouble(Constant.EDIT_LATITUDE, destinationLocation.getLatitude());
+				editIntent.putExtras(extras);
+				startActivityForResult(editIntent, Constant.RESULT_EDIT_LOCATION);
 			} else {
 				Toast.makeText(this, Constant.UNKNOWN_GPS_LOCATION, Toast.LENGTH_LONG).show();
 			}
@@ -254,22 +258,34 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 				Toast.makeText(this, locationDescription + " " + getResources().getString(R.string.pos_set), Toast.LENGTH_SHORT).show();
 			}
 		}
-		if (requestCode == Constant.EDIT_OMSCHRIJVING_RESULT) {
+		if (requestCode == Constant.RESULT_EDIT_LOCATION) {
 			if (resultCode == RESULT_OK) {
-				quickSaveLocation(data.getStringExtra(Constant.EDIT_NIEUWE_OMSCHRIJVING), destinationLocation);
+				Bundle extras = data.getExtras();
+				String omschrijving = extras.getString(Constant.EDIT_OMSCHRIJVING);
+				double latitude = extras.getDouble(Constant.EDIT_LATITUDE);
+				double longitude = extras.getDouble(Constant.EDIT_LONGITUDE);
+				SavedLocation editedLocation = new SavedLocation(destinationLocation);
+				editedLocation.setOmschrijving(omschrijving);
+				editedLocation.setLatitude(latitude);
+				editedLocation.setLongitude(longitude);
+				quickSaveLocation(editedLocation);
 			}
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
-	private void quickSaveLocation(String omschrijving, Location location) {
-		SavedLocation savedLocation = new SavedLocation(location);
-		savedLocation.setOmschrijving(omschrijving);
+	private void quickSaveLocation(SavedLocation savedLocation) {
 		savedLocation.setTime(System.currentTimeMillis());
 		GuideMeBackDbHelper dbHelper = new GuideMeBackDbHelper(this);
 		dbHelper.insertLocation(savedLocation);
 		dbHelper = null;
-		Toast.makeText(this, omschrijving + " " + getResources().getString(R.string.pos_saved), Toast.LENGTH_LONG).show();
+		Toast.makeText(this, savedLocation.getOmschrijving() + " " + getResources().getString(R.string.pos_saved), Toast.LENGTH_LONG).show();
+	}
+
+	private void quickSaveLocation(String omschrijving, Location location) {
+		SavedLocation savedLocation = new SavedLocation(location);
+		savedLocation.setOmschrijving(omschrijving);
+		quickSaveLocation(savedLocation);
 	}
 
 	@Override
