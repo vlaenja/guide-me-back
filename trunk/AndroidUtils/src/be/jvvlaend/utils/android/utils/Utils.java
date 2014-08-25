@@ -27,6 +27,7 @@ public class Utils {
 		} else {
 			return String.valueOf(Utils.afrondenTotCijfersNaKomma(distance / 1000f, 2)) + " Km";
 		}
+
 	}
 
 }
