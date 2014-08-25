@@ -16,6 +16,9 @@
     <string name="menu_stored_locations">Stored locations</string>
     <string name="menu_debug">Debug</string>
     <string name="menu_clipboard">Copy to clipboard</string>
+    <string name="menu_import_from_clipboard">Import from clipboard</string>
+    <string name="menu_export_location_to_clipboard">Export to clipboard</string>
+    <string name="menu_export_all_locations_to_clipboard">Export all locations to clipboard</string>
     <string name="button_Ok">OK</string>
     <string name="button_Save">Save</string>
     <string name="button_Cancel">Cancel</string>
@@ -50,7 +53,12 @@
     <string name="editLocationDescription">Description</string>
     <string name="editLatitudeDescription">Latitude</string>
     <string name="editLongitudeDescription">Longitude</string>
-    <string name="version_info">Version: 1.0.a</string> 
+    <string name="import_clipboard_format">Invalid format:expected="descr;lat=...;long=..."</string>
+    <string name="import_clipboard_empty">Clipboard empty</string>
+    <string name="clipboard_descr">Position</string>
+    <string name="clipboard_lat">Lat=</string>
+    <string name="clipboard_long">Long=</string>
+    <string name="version_info">Version: 1.0.c</string> 
 	<string name="developer_info">Developer : Jan Van Vlaenderen</string>
 
 </resources>

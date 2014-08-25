@@ -47,7 +47,7 @@ public class SavedLocation implements Serializable {
 		gpsLocation.setLatitude(latitude);
 	}
 
-	public double getLongitudee() {
+	public double getLongitude() {
 		return gpsLocation.getLongitude();
 	}
 

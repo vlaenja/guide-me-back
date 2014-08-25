@@ -16,6 +16,9 @@
     <string name="menu_stored_locations">Bewaarde locaties</string>
     <string name="menu_debug">Debug</string>
     <string name="menu_clipboard">Copieer naar klembord</string>
+    <string name="menu_import_from_clipboard">Importeer van klembord</string>
+    <string name="menu_export_location_to_clipboard">Exporteer naar klembord</string>
+    <string name="menu_export_all_locations_to_clipboard">Exporteer alles</string>
     <string name="button_Ok">OK</string>
     <string name="button_Save">Bewaren</string>
     <string name="button_Cancel">Terug</string>
@@ -48,4 +51,7 @@
     <string name="editLongitudeDescription">Longitude</string>	
 	<string name="label_KeepScreenOn">Scherm steeds aan</string>
    	<string name="all_locations_deleted">Alle locaties zijn verwijderd.</string>
+   	<string name="import_clipboard_format">Foutief formaat:verwacht="omschr;lat=...;long=..."</string>
+    <string name="import_clipboard_empty">Klembord leeg</string>
+   	<string name="clipboard_descr">Plaats</string>
 </resources>

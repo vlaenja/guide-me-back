@@ -1,7 +1,9 @@
 package be.jvvlaend.android.guidemeback;
 
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
+import android.content.ClipboardManager;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
@@ -71,6 +73,8 @@ public class SavedLocationsActivity extends MyListActivity {
 
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		SavedLocation location;
+		ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
 		switch (item.getItemId()) {
 		case R.id.menu_savedLocation_set:
 			Intent intent = new Intent();
@@ -89,18 +93,109 @@ public class SavedLocationsActivity extends MyListActivity {
 			Toast.makeText(this, getResources().getString(R.string.all_locations_deleted), Toast.LENGTH_SHORT).show();
 			finish();
 			break;
+		case R.id.menu_savedLocation_import_from_clipboard:
+			saveLocationFromClipboard();
+			// finish();
+			break;
 		case R.id.menu_savedLocation_edit:
 			Intent editIntent = new Intent(this, EditSavedLocationActivity.class);
 			Bundle extras = new Bundle();
-			SavedLocation location = savedLocations.get(savedLocationsadapter.getSelectedElement());
+			location = savedLocations.get(savedLocationsadapter.getSelectedElement());
 			extras.putString(Constant.EDIT_OMSCHRIJVING, location.getOmschrijving());
 			extras.putDouble(Constant.EDIT_LATITUDE, location.getLatitude());
-			extras.putDouble(Constant.EDIT_LONGITUDE, location.getLongitudee());
+			extras.putDouble(Constant.EDIT_LONGITUDE, location.getLongitude());
 			editIntent.putExtras(extras);
 			startActivityForResult(editIntent, Constant.RESULT_EDIT_LOCATION);
 			break;
+		case R.id.menu_savedLocation_export_location_to_clipboard:
+			location = savedLocations.get(savedLocationsadapter.getSelectedElement());
+			clipboardManager.setText(getLocationClipboardText(location));
+			Toast.makeText(this, Constant.LOCATION_SAVED_IN_CLIPBOARD, Toast.LENGTH_LONG).show();
+
+			break;
+		case R.id.menu_savedLocation_export_all_locations_to_clipboard:
+			StringBuffer buffer = new StringBuffer("");
+			int counter = 0;
+			for (SavedLocation loc : savedLocations) {
+				counter++;
+				buffer.append(getLocationClipboardText(loc));
+				if (counter < savedLocations.size()) {
+					buffer.append("|");
+				}
+			}
+			clipboardManager.setText(buffer.toString());
+			Toast.makeText(this, Constant.LOCATION_SAVED_IN_CLIPBOARD, Toast.LENGTH_LONG).show();
+			break;
 		}
 		return super.onMenuItemSelected(featureId, item);
+	}
+
+	private String getLocationClipboardText(SavedLocation location) {
+		return location.getOmschrijving() + ";" + getResources().getString(R.string.clipboard_lat) + location.getLatitude() + ";" + getResources().getString(R.string.clipboard_long)
+				+ location.getLongitude();
+	}
+
+	private void saveLocationFromClipboard() {
+		Double latitude;
+		Double longitude;
+		ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+		if (clipboardManager.getText() == null) {
+			Toast.makeText(this, getResources().getString(R.string.import_clipboard_empty), Toast.LENGTH_LONG).show();
+			return;
+		}
+		String clipboardText = clipboardManager.getText().toString();
+		StringTokenizer stClipboardText = new StringTokenizer(clipboardText, "|");
+		while (stClipboardText.hasMoreElements()) {
+			String locationText = stClipboardText.nextToken();
+			StringTokenizer st = new StringTokenizer(locationText, ";");
+			if (st.countTokens() != 3) {
+				Toast.makeText(this, getResources().getString(R.string.import_clipboard_format), Toast.LENGTH_LONG).show();
+				return;
+			}
+			String omschrijving = st.nextToken();
+			String latText = st.nextToken();
+			String longText = st.nextToken();
+			if (!latText.startsWith("Lat=")) {
+				Toast.makeText(this, getResources().getString(R.string.import_clipboard_format), Toast.LENGTH_LONG).show();
+				return;
+			}
+			st = new StringTokenizer(latText, "=");
+			if (st.countTokens() != 2) {
+				Toast.makeText(this, getResources().getString(R.string.import_clipboard_format), Toast.LENGTH_LONG).show();
+				return;
+			}
+			st.nextToken();
+			try {
+				latitude = Double.valueOf(st.nextToken());
+			} catch (NumberFormatException e) {
+				Toast.makeText(this, getResources().getString(R.string.import_clipboard_format), Toast.LENGTH_LONG).show();
+				return;
+			}
+			if (!longText.startsWith("Long=")) {
+				Toast.makeText(this, getResources().getString(R.string.import_clipboard_format), Toast.LENGTH_LONG).show();
+				return;
+			}
+			st = new StringTokenizer(longText, "=");
+			if (st.countTokens() != 2) {
+				Toast.makeText(this, getResources().getString(R.string.import_clipboard_format), Toast.LENGTH_LONG).show();
+				return;
+			}
+			st.nextToken();
+			try {
+				longitude = Double.valueOf(st.nextToken());
+			} catch (NumberFormatException e) {
+				Toast.makeText(this, getResources().getString(R.string.import_clipboard_format), Toast.LENGTH_LONG).show();
+				return;
+			}
+			SavedLocation newLocation = new SavedLocation(new Location(""));
+			newLocation.setOmschrijving(omschrijving);
+			newLocation.setLatitude(latitude);
+			newLocation.setLongitude(longitude);
+			newLocation.setTime(System.currentTimeMillis());
+			dbHelper.insertLocation(newLocation);
+			fillList();
+			savedLocationsadapter.notifyDataSetChanged();
+		}
 	}
 
 	private void fillList() {
