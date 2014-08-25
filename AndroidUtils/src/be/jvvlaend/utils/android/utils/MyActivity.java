@@ -39,4 +39,5 @@ public class MyActivity extends Activity {
 			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		}
 	}
+
 }
