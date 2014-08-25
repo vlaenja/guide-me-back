@@ -398,7 +398,7 @@ public class GuideMeBackMainActivity extends MyActivity implements LocationChang
 
 	private void saveLocationToClipboard() {
 		ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-		clipboardManager.setText(getResources().getString(R.string.label_lat) + previousReceivedGPSLocation.getLatitude() + " " + getResources().getString(R.string.label_long)
+		clipboardManager.setText(getResources().getString(R.string.clipboard_descr) + ";" + getResources().getString(R.string.clipboard_lat) + previousReceivedGPSLocation.getLatitude() + ";" + getResources().getString(R.string.clipboard_long)
 				+ previousReceivedGPSLocation.getLongitude());
 		Toast.makeText(this, Constant.LOCATION_SAVED_IN_CLIPBOARD, Toast.LENGTH_LONG).show();
 	}

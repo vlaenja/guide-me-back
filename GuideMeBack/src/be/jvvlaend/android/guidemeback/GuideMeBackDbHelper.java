@@ -63,7 +63,7 @@ public class GuideMeBackDbHelper extends SQLiteOpenHelper {
 		values.put(GuideMeBackDbEntry.COLUMN_PROVIDER, savedLocation.getProvider());
 		values.put(GuideMeBackDbEntry.COLUMN_TIMESTAMP, savedLocation.getTime());
 		values.put(GuideMeBackDbEntry.COLUMN_LATITUDE, savedLocation.getLatitude());
-		values.put(GuideMeBackDbEntry.COLUMN_LONGITUDE, savedLocation.getLongitudee());
+		values.put(GuideMeBackDbEntry.COLUMN_LONGITUDE, savedLocation.getLongitude());
 
 		db.insertOrThrow(GuideMeBackDbEntry.TABLE_NAME, null, values);
 		db.close();
@@ -80,7 +80,7 @@ public class GuideMeBackDbHelper extends SQLiteOpenHelper {
 		ContentValues values = new ContentValues();
 		values.put(GuideMeBackDbEntry.COLUMN_OMSCHRIJVING, updatedLocation.getOmschrijving());
 		values.put(GuideMeBackDbEntry.COLUMN_LATITUDE, updatedLocation.getLatitude());
-		values.put(GuideMeBackDbEntry.COLUMN_LONGITUDE, updatedLocation.getLongitudee());
+		values.put(GuideMeBackDbEntry.COLUMN_LONGITUDE, updatedLocation.getLongitude());
 		db.update(GuideMeBackDbEntry.TABLE_NAME, values, GuideMeBackDbEntry._ID + " = " + updatedLocation.getId(), null);
 		db.close();
 	}
